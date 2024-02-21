@@ -1,0 +1,26 @@
+.btn {
+  font-size: 2dvh;
+  margin: 0 auto;
+  padding: 5px 10px;
+  color: rgba(255, 255, 255, 0.4);
+  border-radius: 30px;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  background-color: transparent;
+  transition: all 0.5s;
+}
+
+.btn:hover {
+  background-color: #ebebeb;
+  color: rgb(67, 80, 89);
+  /* border: 2px solid rgb(67, 80, 89); */
+}
+
+.btn__country {
+  width: 30%;
+  max-width: 300px;
+}
+
+.btn__city {
+  width: 50%;
+  max-width: 800px;
+}

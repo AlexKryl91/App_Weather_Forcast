@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Погода</title>
+    <link rel="stylesheet" href="./styles/styles.css" />
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <div class="logo-box">
+          <img src="./img/logo.svg" alt="Weather website logo" />
+        </div>
+        <h1>Погода</h1>
+      </header>
+      <main>
+        <div class="inputs-wrapper">
+          <button class="btn btn__country">Cтрана</button>
+          <button class="btn btn__city">Город</button>
+        </div>
+        <div class="cards-wrapper">
+          <div class="card">Пн</div>
+          <div class="card">Вт</div>
+          <div class="card">Ср</div>
+          <div class="card">
+            <div class="card__day-of-week">Чт</div>
+            <div class="card__date">22 Февраля</div>
+            <div class="card__weather-icon"></div>
+            <div class="card__temp"><span class="card__temp-value">-20</span><span>&#176C</span></div>
+          </div>
+          <div class="card">Пт</div>
+          <div class="card">Сб</div>
+          <div class="card">Вс</div>
+        </div>
+        <div class="dash-wrapper">Сегодня</div>
+      </main>
+      <footer>
+        Designed by ...
+        Sources: API + Icons</footer>
+    </div>
+
+    <!-- <script src="script.js"></script> -->
+  </body>
+</html>
