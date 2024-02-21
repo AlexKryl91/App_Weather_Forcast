@@ -1,0 +1,68 @@
+/* MAIN DASH OF WEATHER PARAMETERS */
+
+.day-info {
+  flex: 1;
+  padding: 5px 0;
+  // background-color: rgba(196, 66, 153, 0.5);
+  border-bottom: 3px solid gray;
+}
+
+.hour-weather {
+  flex: 1;
+  padding: 5px 0;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid gray;
+  // background-color: rgba(196, 151, 66, 0.5);
+
+  &:last-of-type {
+    border-bottom: none;
+  }
+
+  &__time {
+    font-size: 2.2dvh;
+    font-weight: 400;
+    color: rgba(0, 0, 0, 0.3);
+    writing-mode: vertical-lr;
+    transform: rotate(180deg);
+    // background-color: rgba(192, 220, 35, 0.4);
+  }
+
+  &__icon {
+    height: 100%;
+    width: fit-content;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    // background-color: rgba(35, 220, 44, 0.4);
+    text-align: center;
+
+    img {
+      height: 40%;
+    }
+  }
+
+  &__temp-value {
+    font-size: 2.6dvh;
+    font-weight: 500;
+    color: rgb(67, 80, 89);
+    margin-top: 0.8dvh;
+  }
+
+  table {
+    font-size: 1.7dvh;
+    color: rgb(67, 80, 89);
+    // background-color: rgba(196, 66, 153, 0.5);
+
+    td:nth-child(2) {
+      font-weight: 450;
+      color: rgb(0, 0, 0);
+      padding: 0 5px;
+      // border: 1px solid blue;
+    }
+  }
+}

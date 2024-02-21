@@ -15,69 +15,78 @@
         <h1>Погода</h1>
       </header>
       <main>
-        <!-- <div class="inputs-wrapper">
-          <button class="btn btn__country" aria-label="Выберите страну">Cтрана</button>
-          <button class="btn btn__city" aria-label="Введите название города">Город</button>
-        </div> -->
-        <div class="cards-wrapper">
-          <div class="card">Сегодня</div>
-          <div class="card">Завтра</div>
-          <div class="card">Ср</div>
-          <div class="card">
-            <!-- <div class="card__day-of-week">Чт</div>
-            <div class="card__date">22 Февраля</div>
-            <div class="card__weather-icon"></div>
-            <div class="card__temp"><span class="card__temp-value">-20</span><span>&#176C</span></div> -->
-          </div>
-          <div class="card">Пт</div>
-          <div class="card">Сб</div>
-          <div class="card">Вс</div>
-        </div>
-        <div class="dash-wrapper">
-          <!-- <div class="dash__day-of-week">Четверг</div>
+        <section class="day-info" aria-label="Выбранная дата подробнее">
+          <div class="dash__day-of-week">Четверг</div>
           <div class="dash__date">22 Ферваля</div>
           <div class="dash__weather-icon">ICON</div>
           <div class="dash__temp"><span class="dash__temp-value">-20</span><span>&#176C</span></div>
-          <div class="hour-weather">
-            <div class="hour-weather__time">3:00</div>
-            <div class="hour-weather__weather-icon">ICON</div>
-            <div class="hour-weather__time"><span class="hour-wether__temp-value">-20</span><span>&#176C</span></div>
-            <table aria-label="Таблица с подробными параметрами">
+        </section>
+        <section class="hour-weather" aria-label="Погода в 3:00">3:00</section>
+        <section class="hour-weather" aria-label="Погода в 9:00">9:00</section>
+        <section class="hour-weather" aria-label="Погода в 12:00">
+          <label class="hour-weather__time">12:00</label>
+          <div class="hour-weather__icon">
+            <img src="./img/logo.svg" alt="Иконка погоды" />
+            <p class="hour-weather__temp-value">-22<span>&#176C</span></p>
+          </div>
+          <table aria-label="Таблица погодных параметров">
+            <tbody>
             <tr>
-              <td>Ощущается как</td>
-              <td>X</td>
+              <td>Ощущается</td>
+              <td>-26</td>
               <td>&#176C</td>
             </tr>
             <tr>
               <td>Давление</td>
-              <td>X</td>
+              <td>750</td>
               <td>мм рт. ст.</td>
             </tr>
             <tr>
               <td>Ветер</td>
-              <td>X</td>
+              <td>5</td>
               <td>м/с</td>
             </tr>
             <tr>
               <td>Порывы</td>
-              <td>X</td>
+              <td>7</td>
               <td>м/с</td>
             </tr>
             <tr>
               <td>Влажность</td>
-              <td>X</td>
+              <td>43</td>
               <td>%</td>
             </tr>
+            </tbody>
           </table>
-          </div> -->
-          
-        </div>
+        </section>
+        <section class="hour-weather" aria-label="Погода в 15:00">15:00</section>
+        <section class="hour-weather" aria-label="Погода в 18:00">18:00</section>
+        <section class="hour-weather" aria-label="Погода в 21:00">21:00</section>          
       </main>
-      <footer>
-        <!-- Designed by ...
-        Sources: API + Icons</footer> -->
+      <aside class="cards-wrapper">
+        <div class="card">Сегодня</div>
+        <div class="card">Завтра</div>
+        <div class="card">Ср</div>
+        <div class="card">Чт
+          <!-- <div class="card__day-of-week">Чт</div>
+          <div class="card__date">22 Февраля</div>
+          <div class="card__weather-icon"></div>
+          <div class="card__temp"><span class="card__temp-value">-20</span><span>&#176C</span></div> -->
+        </div>
+        <div class="card">Пт</div>
+        <div class="card">Сб</div>
+        <div class="card">Вс</div>
+      </aside>
+      <footer>Designed by ... Sources: API + Icons</footer>
     </div>
 
     <!-- <script src="script.js"></script> -->
   </body>
 </html>
+
+
+
+<!-- <div class="inputs-wrapper">
+  <button class="btn btn__country" aria-label="Выберите страну">Cтрана</button>
+  <button class="btn btn__city" aria-label="Введите название города">Город</button>
+</div> -->

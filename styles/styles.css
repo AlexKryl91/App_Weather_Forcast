@@ -1,3 +1,7 @@
+@font-face {
+  font-family: "Rubik";
+  src: local("Rubik"), url("../fonts/Rubik.ttf") format("truetype");
+}
 /* Styles reset */
 * {
   padding: 0;
@@ -90,31 +94,34 @@ img {
 
 body {
   overflow: hidden;
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: "Rubik", Arial, Helvetica, sans-serif;
   background-image: linear-gradient(0deg, #48c6ef 0%, #5971c7 100%);
 }
 
 .container {
   width: 100dvw;
   height: 100dvh;
+  display: grid;
+  grid-template-columns: repeat(24, 1fr);
+  grid-template-rows: repeat(48, 1fr);
 }
 
 header {
-  width: 100%;
-  height: 4%;
+  grid-column: span 24;
+  grid-row: span 2;
+  box-shadow: 0px 5px 10px #b4b4b4;
+  border-bottom: 2px solid #ebebeb;
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: flex-start;
-  box-shadow: 0px 10px 40px #b4b4b4;
-  border-bottom: 2px solid #ebebeb;
+  z-index: 0;
 }
 
 .logo-box {
-  height: 90%;
+  height: 85%;
   width: fit-content;
-  margin: 0px 20px 0px 20px;
-  /* background-color: #c44299; */
+  margin: 0px 15px 0px 10px;
 }
 
 .logo-box img {
@@ -123,74 +130,91 @@ header {
 
 header h1 {
   height: 100%;
-  padding-top: 5px;
+  padding-top: 0.7dvh;
   color: #ebebeb;
-  font-size: 3dvh;
+  font-size: 2.7dvh;
   text-align: left;
 }
 
 main {
-  width: 100%;
-  height: 100%;
+  grid-column: span 18;
+  grid-row: span 45;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
+  background-color: rgb(230, 235, 250);
+  padding: 5px 0 5px 10px;
 }
 
-.inputs-wrapper {
+/* MAIN DASH OF WEATHER PARAMETERS */
+.day-info {
   flex: 1;
-  width: 100%;
-  height: 8%;
+  padding: 5px 0;
+  border-bottom: 3px solid gray;
+}
+
+.hour-weather {
+  flex: 1;
+  padding: 5px 0;
   display: flex;
   flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: space-between;
   align-items: center;
-  justify-content: center;
+  border-bottom: 1px solid gray;
 }
-
-.btn {
-  font-size: 2dvh;
-  margin: 0 auto;
-  padding: 5px 10px;
-  color: rgba(255, 255, 255, 0.4);
-  border-radius: 30px;
-  border: 1px solid rgba(255, 255, 255, 0.4);
-  background-color: transparent;
-  transition: all 0.5s;
+.hour-weather:last-of-type {
+  border-bottom: none;
 }
-
-.btn:hover {
-  background-color: #ebebeb;
-  color: rgb(67, 80, 89);
-  /* border: 2px solid rgb(67, 80, 89); */
+.hour-weather__time {
+  font-size: 2.2dvh;
+  font-weight: 400;
+  color: rgba(0, 0, 0, 0.3);
+  writing-mode: vertical-lr;
+  transform: rotate(180deg);
 }
-
-.btn__country {
-  width: 30%;
-  max-width: 300px;
-}
-
-.btn__city {
-  width: 50%;
-  max-width: 800px;
-}
-
-.cards-wrapper {
-  flex: 2;
-  width: 100%;
-  /* height: 300px; */
-  border-radius: 4px;
-  padding: 10px;
+.hour-weather__icon {
+  height: 100%;
+  width: fit-content;
   display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+.hour-weather__icon img {
+  height: 40%;
+}
+.hour-weather__temp-value {
+  font-size: 2.6dvh;
+  font-weight: 500;
+  color: rgb(67, 80, 89);
+  margin-top: 0.8dvh;
+}
+.hour-weather table {
+  font-size: 1.7dvh;
+  color: rgb(67, 80, 89);
+}
+.hour-weather table td:nth-child(2) {
+  font-weight: 450;
+  color: rgb(0, 0, 0);
+  padding: 0 5px;
+}
+
+aside {
+  grid-column: span 6;
+  grid-row: span 45;
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
   gap: 10px;
-  background-color: #59c768;
+  background-color: rgb(230, 235, 250);
 }
 
 /* WEATHER CARDS */
 .card {
   flex: 1;
   padding: 12px;
-  border-radius: 30px;
+  border-radius: 10px;
   font-size: 14px;
   background-image: linear-gradient(0deg, rgb(241, 245, 255) 0%, rgb(255, 255, 255) 30%);
   box-shadow: 0px 3px 10px rgba(199, 215, 255, 0.4);
@@ -229,23 +253,10 @@ main {
   color: rgb(67, 80, 89);
 }
 
-.dash-wrapper {
-  flex: 8;
-  width: 100%;
-  background-color: rgba(192, 220, 35, 0.4);
-}
-
-/* MAIN DASH OF WEATHER PARAMETERS */
-table {
-  background-color: rgba(196, 66, 153, 0.5);
-}
-
 /* FOOTER */
 footer {
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  height: 4%;
+  grid-column: span 24;
+  grid-row: span 1;
   font-size: 12px;
   color: #ebebeb;
   background: rgb(67, 80, 89);
