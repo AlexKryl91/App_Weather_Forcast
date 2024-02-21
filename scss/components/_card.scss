@@ -24,7 +24,7 @@
   font-size: 2.5em;
   font-weight: bold;
   color: rgb(67, 80, 89);
-  /* background-color: rgba(200, 35, 220, 0.4); */
+  // background-color: rgba(200, 35, 220, 0.4);
 }
 
 .card__date {
@@ -32,16 +32,16 @@
   font-size: 1.5em;
   font-weight: normal;
   color: rgb(67, 80, 89);
-  /* background-color: rgba(35, 220, 180, 0.4); */
+  // background-color: rgba(35, 220, 180, 0.4);
 }
 
 .card__weather-icon {
   margin: 10px 0;
   height: 50%;
-  background: url(./logo.svg);
-  background-position: center;
-  background-repeat: no-repeat;
-  /* background-color: rgba(35, 115, 220, 0.4); */
+  // background: url(./logo.svg);
+  // background-position: center;
+  // background-repeat: no-repeat;
+  //  background-color: rgba(35, 115, 220, 0.4);
 }
 
 .card__temp {
@@ -50,5 +50,5 @@
   font-weight: normal;
   text-align: center;
   color: rgb(67, 80, 89);
-  /* background-color: rgba(192, 220, 35, 0.4); */
+  // background-color: rgba(192, 220, 35, 0.4);
 }
