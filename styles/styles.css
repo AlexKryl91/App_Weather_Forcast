@@ -95,7 +95,11 @@ img {
 body {
   overflow: hidden;
   font-family: "Rubik", Arial, Helvetica, sans-serif;
-  background-image: linear-gradient(0deg, #48c6ef 0%, #5971c7 100%);
+  background-color: rgb(230, 235, 250);
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
 }
 
 .container {
@@ -109,33 +113,112 @@ body {
 header {
   grid-column: span 24;
   grid-row: span 2;
-  box-shadow: 0px 5px 10px #b4b4b4;
-  border-bottom: 2px solid #ebebeb;
+  background-color: rgb(90, 115, 200);
+  box-shadow: 0px 5px 10px rgb(180, 180, 180);
+  border-bottom: 2px solid rgb(235, 235, 235);
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: flex-start;
+  justify-content: center;
   z-index: 0;
 }
-
-.logo-box {
+header .logo-box {
+  flex: 1;
   height: 85%;
-  width: fit-content;
   margin: 0px 15px 0px 10px;
+  background: url(../img/logo.svg);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
 }
-
-.logo-box img {
-  height: 100%;
-}
-
 header h1 {
+  flex: 2;
   height: 100%;
   padding-top: 0.7dvh;
-  color: #ebebeb;
+  color: rgb(235, 235, 235);
   font-size: 2.7dvh;
   text-align: left;
 }
 
+.search-container {
+  flex: 10;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-open-btn {
+  position: relative;
+  height: 2.8dvh;
+  width: 75%;
+  padding-left: 3.5dvh;
+  text-align: left;
+  font-size: 1.8dvh;
+  color: rgb(175, 185, 230);
+  border-radius: 30px;
+  border: 2px solid rgb(175, 185, 230);
+  background-color: transparent;
+  transition: all 0.3s;
+}
+.modal-open-btn:hover {
+  color: rgb(67, 80, 89);
+  background-color: rgb(255, 255, 255);
+  border: 2px solid rgb(255, 255, 255);
+}
+.modal-open-btn .icon-label {
+  position: absolute;
+  left: 0;
+  top: 0;
+  padding-top: 0.1dvh;
+  height: calc(2.8dvh - 4px);
+  width: calc(2.8dvh - 4px);
+  border-radius: 50%;
+  color: rgb(90, 115, 200);
+  border: 2px transparent;
+  outline: 3px solid rgb(90, 115, 200);
+  background-color: rgb(175, 185, 230);
+  font-size: 1.5dvh;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+.search-modal {
+  margin: auto;
+  min-width: 300px;
+  max-width: 400px;
+  width: 100%;
+  padding: 30px 20px;
+  border-radius: 24px;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
+  background-color: #fff;
+  animation: move-in 0.3s ease;
+}
+
+.search-modal::backdrop {
+  background: rgba(25, 45, 70, 0.6);
+  backdrop-filter: blur(3px);
+  animation: fade-in 0.3s;
+}
+
+@keyframes move-in {
+  0% {
+    scale: 1.2;
+  }
+  100% {
+    scale: 1;
+  }
+}
+@keyframes fade-in {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
 main {
   grid-column: span 18;
   grid-row: span 45;
@@ -145,11 +228,30 @@ main {
   padding: 5px 0 5px 10px;
 }
 
-/* MAIN DASH OF WEATHER PARAMETERS */
 .day-info {
   flex: 1;
-  padding: 5px 0;
-  border-bottom: 3px solid gray;
+  padding: 5px 10px;
+  border-bottom: 3px solid rgba(70, 80, 90, 0.6);
+  color: rgb(67, 80, 89);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  font-size: 1dvh;
+}
+.day-info__day {
+  flex: 1;
+  font-size: 4.5em;
+  font-weight: 600;
+}
+.day-info__date {
+  flex: 1;
+  font-size: 2em;
+  margin-top: 0.4em;
+}
+.day-info__current-time {
+  flex: 1;
+  font-size: 2em;
 }
 
 .hour-weather {
@@ -160,7 +262,7 @@ main {
   flex-wrap: nowrap;
   justify-content: space-between;
   align-items: center;
-  border-bottom: 1px solid gray;
+  border-bottom: 2px solid rgba(70, 80, 90, 0.2);
 }
 .hour-weather:last-of-type {
   border-bottom: none;
@@ -194,10 +296,16 @@ main {
   font-size: 1.7dvh;
   color: rgb(67, 80, 89);
 }
+.hour-weather table td:nth-child(1) {
+  text-align: center;
+}
 .hour-weather table td:nth-child(2) {
-  font-weight: 450;
-  color: rgb(0, 0, 0);
   padding: 0 5px;
+}
+.hour-weather table td:nth-child(3) {
+  font-weight: 450;
+  padding: 0 5px;
+  text-align: center;
 }
 
 aside {
@@ -208,17 +316,22 @@ aside {
   padding: 10px;
   gap: 10px;
   background-color: rgb(230, 235, 250);
+  box-shadow: -6px 0px 10px rgba(200, 215, 255, 0.4);
 }
 
-/* WEATHER CARDS */
 .card {
   flex: 1;
-  padding: 12px;
+  padding: 0.6dvh 1.8dvw;
   border-radius: 10px;
-  font-size: 14px;
-  background-image: linear-gradient(0deg, rgb(241, 245, 255) 0%, rgb(255, 255, 255) 30%);
-  box-shadow: 0px 3px 10px rgba(199, 215, 255, 0.4);
+  font-size: 1.4dvh;
+  color: rgb(67, 80, 89);
+  background-image: linear-gradient(0deg, rgb(240, 245, 255) 0%, rgb(255, 255, 255) 30%);
+  box-shadow: 0px 3px 10px rgba(200, 215, 255, 0.4);
   transition: all 0.5s;
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+  grid-template-rows: repeat(16, 1fr);
+  align-items: center;
 }
 
 .card:hover,
@@ -227,37 +340,44 @@ aside {
 }
 
 .card__day-of-week {
-  height: 15%;
-  font-size: 2.5em;
-  font-weight: bold;
-  color: rgb(67, 80, 89);
+  grid-column: span 1;
+  grid-row: span 3;
+  font-size: 1.2em;
+  font-weight: 500;
 }
 
 .card__date {
-  height: 10%;
-  font-size: 1.5em;
-  font-weight: normal;
-  color: rgb(67, 80, 89);
+  grid-column: span 1;
+  grid-row: span 2;
+  font-size: 0.8em;
+  font-weight: 400;
+  padding-bottom: 0.1em;
 }
 
 .card__weather-icon {
-  margin: 10px 0;
-  height: 50%;
+  height: 90%;
+  grid-column: span 1;
+  grid-row: span 7;
+  background: url(../img/logo.svg);
+  background-position: center;
+  background-repeat: no-repeat;
 }
 
 .card__temp {
-  height: 18%;
-  font-size: 3em;
-  font-weight: normal;
+  grid-column: span 1;
+  grid-row: span 6;
+  font-size: 1.8em;
+  font-weight: 400;
   text-align: center;
-  color: rgb(67, 80, 89);
 }
 
 /* FOOTER */
 footer {
   grid-column: span 24;
   grid-row: span 1;
-  font-size: 12px;
+  padding: 3px;
+  font-size: 1dvh;
+  font-weight: 300;
   color: #ebebeb;
   background: rgb(67, 80, 89);
 }

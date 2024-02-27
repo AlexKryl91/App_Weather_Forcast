@@ -1,31 +1,84 @@
 header {
   grid-column: span 24;
   grid-row: span 2;
-  //   background-color: rgba(196, 66, 153, 0.5);
-  box-shadow: 0px 5px 10px #b4b4b4;
-  border-bottom: 2px solid #ebebeb;
+  background-color: rgb(90, 115, 200);
+  box-shadow: 0px 5px 10px rgb(180, 180, 180);
+  border-bottom: 2px solid rgb(235, 235, 235);
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: flex-start;
+  justify-content: center;
   z-index: 0;
+
+  .logo-box {
+    flex: 1;
+    height: 85%;
+    margin: 0px 15px 0px 10px;
+    //   background-color: #c44299;
+
+    background: url(../img/logo.svg);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+  }
+
+  h1 {
+    flex: 2;
+    height: 100%;
+    padding-top: 0.7dvh;
+    color: rgb(235, 235, 235);
+    font-size: 2.7dvh;
+    text-align: left;
+  }
 }
 
-.logo-box {
-  height: 85%;
-  width: fit-content;
-  margin: 0px 15px 0px 10px;
-  //   background-color: #c44299;
-}
-
-.logo-box img {
+.search-container {
+  flex: 10;
   height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  // background-color: rgba(192, 220, 35, 0.4);
 }
 
-header h1 {
-  height: 100%;
-  padding-top: 0.7dvh;
-  color: #ebebeb;
-  font-size: 2.7dvh;
+.modal-open-btn {
+  position: relative;
+  height: 2.8dvh;
+  width: 75%;
+  padding-left: 3.5dvh;
   text-align: left;
+  font-size: 1.8dvh;
+  color: rgb(175, 185, 230);
+  border-radius: 30px;
+  border: 2px solid rgb(175, 185, 230);
+  background-color: transparent;
+  transition: all 0.3s;
+
+  &:hover {
+    color: rgb(67, 80, 89);
+    background-color: rgb(255, 255, 255);
+    border: 2px solid rgb(255, 255, 255);
+  }
+
+  .icon-label {
+    position: absolute;
+    left: 0;
+    top: 0;
+    padding-top: 0.1dvh;
+    height: calc(2.8dvh - 4px);
+    width: calc(2.8dvh - 4px);
+    border-radius: 50%;
+    color: rgb(90, 115, 200);
+    border: 2px transparent;
+    outline: 3px solid rgb(90, 115, 200);
+    background-color: rgb(175, 185, 230);
+
+    font-size: 1.5dvh;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+  }
 }
+
+@import '../components/search-modal';

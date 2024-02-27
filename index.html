@@ -4,22 +4,44 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Погода</title>
+    <link rel="stylesheet" href="./styles/icons-geo-and-weather.css" />
     <link rel="stylesheet" href="./styles/styles.css" />
   </head>
   <body>
     <div class="container">
       <header>
-        <div class="logo-box">
-          <img src="./img/logo.svg" alt="Weather website logo" />
-        </div>
+        <div class="logo-box" aria-label="Weather website logo"></div>
         <h1>Погода</h1>
+        <div class="search-container">
+          <dialog class="search-modal">
+            <!-- <div class="_icon-loc-dot"></div>
+            <div class="search">
+              <input
+                type="text"
+                class="location-search"
+                aria-label="Введите название города"
+                placeholder="Укажите город, страну..."
+              />
+              <button type="submit" class="_icon-mag-glass"></button>
+            </div> -->
+            <button class="modal-ok-btn">Применить</button>
+            <button class="modal-close-btn">Отмена</button>
+          </dialog>
+
+          <button class="modal-open-btn">
+            <label class="icon-label _icon-loc-dot"></label>Поиск города...
+          </button>
+        </div>
       </header>
       <main>
         <section class="day-info" aria-label="Выбранная дата подробнее">
-          <div class="dash__day-of-week">Четверг</div>
-          <div class="dash__date">22 Ферваля</div>
-          <div class="dash__weather-icon">ICON</div>
-          <div class="dash__temp"><span class="dash__temp-value">-20</span><span>&#176C</span></div>
+          <p class="day-info__day">Четверг</p>
+          <p class="day-info__date">
+            <span class="_icon-cal-days"></span> 22 Ферваля 2024
+          </p>
+          <p class="day-info__current-time">
+            <span class="_icon-clock"> Текущее время: </span>11:37
+          </p>
         </section>
         <section class="hour-weather" aria-label="Погода в 3:00">3:00</section>
         <section class="hour-weather" aria-label="Погода в 9:00">9:00</section>
@@ -27,66 +49,124 @@
           <label class="hour-weather__time">12:00</label>
           <div class="hour-weather__icon">
             <img src="./img/logo.svg" alt="Иконка погоды" />
-            <p class="hour-weather__temp-value">-22<span>&#176C</span></p>
+            <p class="hour-weather__temp-value">-22<span>&degC</span></p>
           </div>
           <table aria-label="Таблица погодных параметров">
             <tbody>
-            <tr>
-              <td>Ощущается</td>
-              <td>-26</td>
-              <td>&#176C</td>
-            </tr>
-            <tr>
-              <td>Давление</td>
-              <td>750</td>
-              <td>мм рт. ст.</td>
-            </tr>
-            <tr>
-              <td>Ветер</td>
-              <td>5</td>
-              <td>м/с</td>
-            </tr>
-            <tr>
-              <td>Порывы</td>
-              <td>7</td>
-              <td>м/с</td>
-            </tr>
-            <tr>
-              <td>Влажность</td>
-              <td>43</td>
-              <td>%</td>
-            </tr>
+              <tr>
+                <td class="_icon-temp-half"></td>
+                <td>Ощущается</td>
+                <td>-26</td>
+                <td>&degC</td>
+              </tr>
+              <tr>
+                <td class="_icon-arrow-down"></td>
+                <td>Давление</td>
+                <td>750</td>
+                <td>мм рт. ст.</td>
+              </tr>
+              <tr>
+                <td class="_icon-wind"></td>
+                <td>Ветер</td>
+                <td>5</td>
+                <td>м/с</td>
+              </tr>
+              <tr>
+                <td class="_icon-tornado"></td>
+                <td>Порывы</td>
+                <td>7</td>
+                <td>м/с</td>
+              </tr>
+              <tr>
+                <td class="_icon-droplet"></td>
+                <td>Влажность</td>
+                <td>43</td>
+                <td>%</td>
+              </tr>
             </tbody>
           </table>
         </section>
-        <section class="hour-weather" aria-label="Погода в 15:00">15:00</section>
-        <section class="hour-weather" aria-label="Погода в 18:00">18:00</section>
-        <section class="hour-weather" aria-label="Погода в 21:00">21:00</section>          
+        <section class="hour-weather" aria-label="Погода в 15:00">
+          15:00
+        </section>
+        <section class="hour-weather" aria-label="Погода в 18:00">
+          18:00
+        </section>
+        <section class="hour-weather" aria-label="Погода в 21:00">
+          21:00
+        </section>
       </main>
       <aside class="cards-wrapper">
-        <div class="card">Сегодня</div>
-        <div class="card">Завтра</div>
-        <div class="card">Ср</div>
-        <div class="card">Чт
-          <!-- <div class="card__day-of-week">Чт</div>
+        <div class="card">
+          <div class="card__day-of-week">Сегодня</div>
           <div class="card__date">22 Февраля</div>
           <div class="card__weather-icon"></div>
-          <div class="card__temp"><span class="card__temp-value">-20</span><span>&#176C</span></div> -->
+          <div class="card__temp">
+            <span class="card__temp-value">-20</span><span>&degC</span>
+          </div>
         </div>
-        <div class="card">Пт</div>
-        <div class="card">Сб</div>
-        <div class="card">Вс</div>
+        <div class="card">
+          <div class="card__day-of-week">Сегодня</div>
+          <div class="card__date">22 Февраля</div>
+          <div class="card__weather-icon"></div>
+          <div class="card__temp">
+            <span class="card__temp-value">-20</span><span>&degC</span>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card__day-of-week">Сегодня</div>
+          <div class="card__date">22 Февраля</div>
+          <div class="card__weather-icon"></div>
+          <div class="card__temp">
+            <span class="card__temp-value">-20</span><span>&degC</span>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card__day-of-week">Сегодня</div>
+          <div class="card__date">22 Февраля</div>
+          <div class="card__weather-icon"></div>
+          <div class="card__temp">
+            <span class="card__temp-value">-20</span><span>&degC</span>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card__day-of-week">Сегодня</div>
+          <div class="card__date">22 Февраля</div>
+          <div class="card__weather-icon"></div>
+          <div class="card__temp">
+            <span class="card__temp-value">-20</span><span>&degC</span>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card__day-of-week">Сегодня</div>
+          <div class="card__date">22 Февраля</div>
+          <div class="card__weather-icon"></div>
+          <div class="card__temp">
+            <span class="card__temp-value">-20</span><span>&degC</span>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card__day-of-week">Сегодня</div>
+          <div class="card__date">22 Февраля</div>
+          <div class="card__weather-icon"></div>
+          <div class="card__temp">
+            <span class="card__temp-value">-20</span><span>&degC</span>
+          </div>
+        </div>
       </aside>
-      <footer>Designed by ... Sources: API + Icons</footer>
+      <footer>
+        <p>Designed by Krylovsky Alexander.</p>
+        <p>
+          Weather Forecast & Geocoding API:<a
+            href="https://open-meteo.com/"
+            target="_blank"
+          >
+            Open-meteo.com</a
+          >
+        </p>
+      </footer>
     </div>
 
-    <!-- <script src="script.js"></script> -->
+    <script src="script.js"></script>
   </body>
 </html>
-
-
-
-<!-- <div class="inputs-wrapper">
-  <button class="btn btn__country" aria-label="Выберите страну">Cтрана</button>
-  <button class="btn btn__city" aria-label="Введите название города">Город</button>
-</div> -->

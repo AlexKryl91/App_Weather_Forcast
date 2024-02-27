@@ -3,7 +3,9 @@
 footer {
   grid-column: span 24;
   grid-row: span 1;
-  font-size: 12px;
+  padding: 3px;
+  font-size: 1dvh;
+  font-weight: 300;
   color: #ebebeb;
   background: rgb(67, 80, 89);
 }
