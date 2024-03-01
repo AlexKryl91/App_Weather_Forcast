@@ -1,0 +1,122 @@
+@media screen and (orientation: landscape) {
+  .container {
+    grid-template-columns: repeat(48, 1fr);
+    grid-template-rows: repeat(48, 1fr);
+  }
+
+  header {
+    order: 1;
+    grid-column: span 48;
+    grid-row: span 2;
+    z-index: 1;
+  }
+
+  main {
+    order: 3;
+    grid-column: span 48;
+    grid-row: span 35;
+    flex-direction: row;
+    flex-wrap: wrap;
+    //
+    // justify-content: flex-start;
+    //
+    padding: 0 5px 10px 5px;
+  }
+
+  .day-info {
+    flex: none;
+    width: 100%;
+    height: 12%;
+
+    flex-direction: row;
+    align-items: center;
+
+    text-align: center;
+    padding: 1dvh 0px;
+
+    &__date {
+      font-size: 2.5em;
+      margin-top: 0;
+    }
+
+    &__current-time {
+      font-size: 2.5em;
+    }
+  }
+
+  .hour-weather {
+    height: 88%;
+    flex-direction: column;
+    border-bottom: none;
+    border-right: 2px solid rgba(70, 80, 90, 0.2);
+    font-size: 1dvh;
+
+    &:last-of-type {
+      border-right: none;
+    }
+
+    &__time {
+      writing-mode: initial;
+      transform: rotate(0deg);
+    }
+
+    &__icon {
+      width: 100%;
+
+      img {
+        width: 60%;
+      }
+    }
+
+    &__temp-value {
+      font-size: min(5em, 36px);
+    }
+
+    table {
+      font-size: 1.1dvw;
+      padding: 0;
+      margin: 0 3px 3dvh 3px;
+
+      caption {
+        text-align: center;
+        text-wrap: balance;
+      }
+
+      .extended {
+        display: table-row;
+      }
+    }
+  }
+
+  aside {
+    order: 2;
+    grid-column: span 48;
+    grid-row: span 10;
+    display: flex;
+    flex-direction: row;
+    box-shadow: 0px 6px 10px rgba(200, 215, 255, 0.6);
+    z-index: 0;
+  }
+
+  .card {
+    &__day-of-week {
+      font-size: 1.6em;
+    }
+
+    &__date {
+      font-size: 1em;
+      padding-bottom: 0.4em;
+    }
+
+    &__temp {
+      font-size: 2.2em;
+      font-weight: 450;
+    }
+  }
+
+  footer {
+    order: 4;
+    grid-column: span 48;
+    grid-row: span 1;
+  }
+}

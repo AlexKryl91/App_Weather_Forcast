@@ -1,0 +1,19 @@
+:root {
+  --color-main-blue: rgb(90, 115, 200);
+  --color-btn-blue: rgb(70, 120, 215);
+  --color-btn-dark-blue: rgb(30, 75, 170);
+  --color-light-blue: rgb(145, 195, 230);
+  --color-faded-white: rgb(235, 235, 235);
+  --color-white-blue: rgb(230, 235, 250);
+  --color-gray-blue: rgb(175, 185, 230);
+  --color-white: rgb(255, 255, 255);
+  --color-shadow-1: rgba(200, 215, 255, 0.4);
+  --color-text-1: rgb(70, 80, 90);
+  --gradient-white-blue: linear-gradient(
+    0deg,
+    rgb(240, 245, 255) 0%,
+    rgb(255, 255, 255) 30%
+  );
+  //
+  --fonts-default-stack: Verdana, Tahoma, Arial, sans-serif;
+}

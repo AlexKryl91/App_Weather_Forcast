@@ -1,0 +1,17 @@
+body {
+  overflow: hidden;
+  font-family: 'Rubik', var(--fonts-default-stack);
+  background-color: var(--color-white-blue);
+  @extend %disable-user-select;
+}
+
+.container {
+  width: 100dvw;
+  height: 100dvh;
+  @include grid-fr_col-row(24, 48);
+}
+
+@import '../components/header';
+@import '../components/day-board';
+@import '../components/cards-bar';
+@import '../components/footer';

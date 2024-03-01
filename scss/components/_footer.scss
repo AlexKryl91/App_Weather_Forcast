@@ -1,11 +1,21 @@
-/* FOOTER */
-
 footer {
-  grid-column: span 24;
-  grid-row: span 1;
-  padding: 3px;
-  font-size: 1dvh;
-  font-weight: 300;
-  color: #ebebeb;
-  background: rgb(67, 80, 89);
+  @include grid-cr-span-and-font(span 24, span 1, 1dvh, 300);
+  padding: 3px 6px;
+  color: var(--color-faded-white);
+  background: var(--color-text-1);
+  @extend %flex-row-center-shared;
+
+  .author {
+    flex: 3;
+    text-align: left;
+  }
+
+  .refference {
+    flex: 4;
+    text-align: right;
+  }
+
+  a {
+    color: var(--color-light-blue);
+  }
 }

@@ -1,0 +1,132 @@
+@font-face {
+  font-family: 'weather_app_icons';
+  src: url('../fonts/weather_app_icons.eot?h1quj4');
+  src: url('../fonts/weather_app_icons.eot?h1quj4#iefix')
+      format('embedded-opentype'),
+    url('../fonts/weather_app_icons.ttf?h1quj4') format('truetype'),
+    url('../fonts/weather_app_icons.woff?h1quj4') format('woff');
+  font-weight: normal;
+  font-style: normal;
+  font-display: block;
+}
+
+[class^='_wi-']::before,
+[class*=' _wi-']::before {
+  /* use !important to prevent issues with browser extensions that change fonts */
+  font-family: 'weather_app_icons' !important;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+
+  /* Better Font Rendering =========== */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+._wi-arrow-down:before {
+  content: '\e900';
+}
+._wi-arrow-left:before {
+  content: '\e901';
+}
+._wi-arrow-right:before {
+  content: '\e902';
+}
+._wi-arrows-rotate:before {
+  content: '\e903';
+}
+._wi-cal:before {
+  content: '\e904';
+}
+._wi-cal-check:before {
+  content: '\e905';
+}
+._wi-cal-day:before {
+  content: '\e906';
+}
+._wi-cal-days:before {
+  content: '\e907';
+}
+._wi-clock:before {
+  content: '\e908';
+}
+._wi-cloud:before {
+  content: '\e909';
+}
+._wi-cloud-bolt:before {
+  content: '\e90a';
+}
+._wi-cloud-meatball:before {
+  content: '\e90b';
+}
+._wi-cloud-moon:before {
+  content: '\e90c';
+}
+._wi-cloud-moon-rain:before {
+  content: '\e90d';
+}
+._wi-cloud-rain:before {
+  content: '\e90e';
+}
+._wi-cloud-heavy-rain:before {
+  content: '\e90f';
+}
+._wi-cloud-sun:before {
+  content: '\e910';
+}
+._wi-cloud-sun-rain:before {
+  content: '\e911';
+}
+._wi-compass:before {
+  content: '\e912';
+}
+._wi-droplet:before {
+  content: '\e913';
+}
+._wi-eye:before {
+  content: '\e914';
+}
+._wi-globe:before {
+  content: '\e915';
+}
+._wi-location-dot:before {
+  content: '\e916';
+}
+._wi-mag-glass:before {
+  content: '\e917';
+}
+._wi-map:before {
+  content: '\e918';
+}
+._wi-map-location:before {
+  content: '\e919';
+}
+._wi-map-location-dot:before {
+  content: '\e91a';
+}
+._wi-map-pin:before {
+  content: '\e91b';
+}
+._wi-smog:before {
+  content: '\e91c';
+}
+._wi-snowflake:before {
+  content: '\e91d';
+}
+._wi-sun:before {
+  content: '\e91e';
+}
+._wi-temp-half:before {
+  content: '\e91f';
+}
+._wi-tornado:before {
+  content: '\e920';
+}
+._wi-umbrella:before {
+  content: '\e921';
+}
+._wi-wind:before {
+  content: '\e922';
+}

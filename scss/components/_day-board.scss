@@ -3,16 +3,15 @@ main {
   grid-row: span 45;
   display: flex;
   flex-direction: column;
-  background-color: rgb(230, 235, 250);
+  background-color: var(--color-white-blue);
   padding: 5px 0 5px 10px;
 }
 
 .day-info {
   flex: 1;
   padding: 5px 10px;
-  // background-color: rgba(196, 66, 153, 0.5);
   border-bottom: 3px solid rgba(70, 80, 90, 0.6);
-  color: rgb(67, 80, 89);
+  color: var(--color-text-1);
 
   display: flex;
   flex-direction: column;
@@ -31,11 +30,18 @@ main {
     flex: 1;
     font-size: 2em;
     margin-top: 0.4em;
+    @extend %flex-row-center-shared;
   }
 
   &__current-time {
     flex: 1;
     font-size: 2em;
+    @extend %flex-row-center-shared;
+  }
+
+  .icon_color {
+    color: var(--color-main-blue);
+    padding-right: 10px;
   }
 }
 
@@ -48,30 +54,29 @@ main {
   justify-content: space-between;
   align-items: center;
   border-bottom: 2px solid rgba(70, 80, 90, 0.2);
-  // background-color: rgba(196, 151, 66, 0.5);
+  font-size: 1dvw;
 
   &:last-of-type {
     border-bottom: none;
   }
 
   &__time {
-    font-size: 2.2dvh;
+    font-size: min(4em, 26px);
     font-weight: 400;
     color: rgba(0, 0, 0, 0.3);
     writing-mode: vertical-lr;
     transform: rotate(180deg);
-    // background-color: rgba(192, 220, 35, 0.4);
   }
 
   &__icon {
     height: 100%;
     width: fit-content;
+    text-align: center;
+
     display: flex;
     flex-direction: column;
-    justify-content: center;
     align-items: center;
-    // background-color: rgba(35, 220, 44, 0.4);
-    text-align: center;
+    justify-content: center;
 
     img {
       height: 40%;
@@ -79,29 +84,43 @@ main {
   }
 
   &__temp-value {
-    font-size: 2.6dvh;
+    font-size: min(5em, 22px);
     font-weight: 500;
-    color: rgb(67, 80, 89);
+    color: var(--color-text-1);
     margin-top: 0.8dvh;
   }
 
   table {
-    font-size: 1.7dvh;
-    color: rgb(67, 80, 89);
-    // background-color: rgba(196, 66, 153, 0.5);
+    font-size: min(3em, 14px);
+    color: var(--color-text-1);
+    padding-right: 5dvw;
 
     td:nth-child(1) {
       text-align: center;
+      color: var(--color-main-blue);
     }
+
     td:nth-child(2) {
-      padding: 0 5px;
+      padding: 0 0.2em;
     }
 
     td:nth-child(3) {
       font-weight: 450;
-      padding: 0 5px;
+      padding: 0 0.2em;
       text-align: center;
-      // border: 1px solid blue;
+    }
+
+    caption {
+      font-size: 1.1em;
+      font-weight: 500;
+      padding: 0 0.3em;
+      margin-bottom: 0.3em;
+      text-align: left;
+      text-wrap: nowrap;
+    }
+
+    .extended {
+      display: none;
     }
   }
 }
