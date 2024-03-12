@@ -1,7 +1,7 @@
-import { AppData } from './modules/app_data.js';
-import { wmoData } from './modules/weather_description.js';
-import { renderDayCards } from './modules/_day_cards_render.js';
-import { renderDayHourly } from './modules/_day_hourly_render.js';
+import { AppData } from '/App_Weather_Forcast/modules/app_data.js';
+import { wmoData } from '/App_Weather_Forcast/modules/weather_description.js';
+import { renderDayCards } from '/App_Weather_Forcast/modules/_day_cards_render.js';
+import { renderDayHourly } from '/App_Weather_Forcast/modules/_day_hourly_render.js';
 
 // ====== CONST for search pop-up window interaction ======>
 const modalSearchWindow = document.querySelector('.search-popup');
