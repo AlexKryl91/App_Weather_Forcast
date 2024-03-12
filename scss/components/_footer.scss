@@ -3,15 +3,17 @@ footer {
   padding: 3px 6px;
   color: var(--color-faded-white);
   background: var(--color-text-1);
-  @extend %flex-row-center-shared;
+
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
 
   .author {
-    flex: 3;
     text-align: left;
   }
 
   .refference {
-    flex: 4;
     text-align: right;
   }
 

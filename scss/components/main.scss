@@ -1,0 +1,23 @@
+body {
+  width: 100dvw;
+  height: 100dvh;
+  overflow: hidden;
+  font-family: 'Rubik', var(--fonts-default-stack);
+  background-color: var(--color-white-blue);
+  @extend %disable-user-select;
+}
+
+.container {
+  width: 100%;
+  height: 100%;
+  @include grid-fr_col-row(24, 48);
+}
+
+@import '../components/header';
+@import '../components/day_hourly';
+@import '../components/day_cards';
+@import '../components/footer';
+@import '../components/popup';
+@import '../components/popup_search';
+@import '../components/popup_error';
+@import '../components/loading';

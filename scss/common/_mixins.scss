@@ -11,38 +11,22 @@
   grid-template-rows: repeat($rows, 1fr);
 }
 
-@mixin bg-icon($url) {
-  background: $url;
+@mixin bg-icon($url, $height) {
+  @if $url == 'false' {
+  } @else {
+    background: $url;
+  }
   background-repeat: no-repeat;
   background-position: center;
   background-repeat: no-repeat;
   background-size: contain;
+  height: $height;
 }
 
-// @mixin game-field-layout($defining-size, $columns-number) {
-//   grid-template-columns: repeat($columns-number, 1fr);
-
-//   @if $columns-number == 4 {
-//     $dynamic-gap: (0.0065 * $defining-size);
-//     gap: $dynamic-gap;
-//     padding: $dynamic-gap;
-//     width: (0.5 * $defining-size + 5 * $dynamic-gap);
-//     height: ($defining-size + 6 * $dynamic-gap);
-//   }
-
-//   @if $columns-number == 5 {
-//     $dynamic-gap: (0.0135 * $defining-size);
-//     gap: $dynamic-gap;
-//     padding: $dynamic-gap;
-//     width: (0.78125 * $defining-size + 6 * $dynamic-gap);
-//     height: ($defining-size + 5 * $dynamic-gap);
-//   }
-
-//   @if $columns-number == 10 {
-//     $dynamic-gap: (0.0065 * $defining-size);
-//     gap: $dynamic-gap;
-//     padding: $dynamic-gap;
-//     width: ($defining-size + 11 * $dynamic-gap);
-//     height: (0.32 * $defining-size + 3 * $dynamic-gap);
-//   }
-// }
+@mixin err-text($font-size, $font-weight, $color) {
+  font-size: $font-size;
+  text-align: center;
+  font-weight: $font-weight;
+  text-wrap: balance;
+  color: $color;
+}

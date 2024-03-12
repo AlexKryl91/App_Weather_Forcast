@@ -1,0 +1,21 @@
+.error-popup {
+  h1 {
+    @include err-text(42px, 500, var(--color-text-1));
+  }
+
+  p {
+    margin-bottom: 10px;
+    @include err-text(28px, 400, var(--color-text-1));
+  }
+
+  .message {
+    @include err-text(22px, 400, var(--color-main-blue));
+
+    &::before {
+      content: '< ';
+    }
+    &::after {
+      content: ' >';
+    }
+  }
+}

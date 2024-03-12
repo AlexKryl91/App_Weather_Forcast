@@ -1,0 +1,72 @@
+.search-popup {
+  h2 {
+    width: 100%;
+    font-size: 28px;
+    text-align: center;
+    font-weight: 500;
+    color: var(--color-text-1);
+  }
+
+  form {
+    width: 100%;
+  }
+
+  label {
+    font-size: 18px;
+    color: var(--color-text-1-alpha);
+  }
+
+  .input-wrapper {
+    position: relative;
+    width: 100%;
+    margin-top: 5px;
+
+    #location-name-search {
+      width: 100%;
+      padding: 5px 80px 5px 10px;
+      font-size: 16px;
+      color: var(--color-text-1);
+      background-color: var(--color-white);
+
+      &::placeholder {
+        color: var(--color-text-1-alpha);
+      }
+    }
+
+    .search-btn {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+      width: 60px;
+      padding-top: 4px;
+      font-size: 16px;
+      color: var(--color-white);
+      background-color: var(--color-btn-blue);
+      transition: all 0.3s;
+
+      &:hover {
+        background-color: var(--color-btn-dark-blue);
+      }
+    }
+  }
+
+  #search-result-list {
+    width: 100%;
+    margin-top: 5px;
+    color: var(--color-text-1);
+    background-color: var(--color-white);
+    font-size: 16px;
+    overflow: scroll;
+
+    option {
+      padding: 5px 10px;
+      font-size: 16px;
+      border-bottom: 1px solid var(--color-text-1-alpha);
+
+      &:hover {
+        background-color: rgb(200, 210, 220);
+      }
+    }
+  }
+}

@@ -1,0 +1,38 @@
+.loading {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  backdrop-filter: blur(3px);
+  animation: fade-in 0.4s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+}
+
+.loading-main {
+  background: rgba(25, 45, 70, 0.6);
+}
+
+.loading-popup {
+  border-radius: 40px;
+  background-image: radial-gradient(
+    rgba(25, 45, 70, 0.4) 0%,
+    rgba(25, 45, 70, 0.4) 25%,
+    transparent 90%
+  );
+}
+
+.spinner {
+  width: 120px;
+  height: 120px;
+  animation: rotate 2s linear infinite;
+
+  & .path {
+    stroke: var(--color-white-blue);
+    stroke-linecap: round;
+    animation: dash 1.5s ease-in-out infinite;
+  }
+}

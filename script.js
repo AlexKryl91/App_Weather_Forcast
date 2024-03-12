@@ -1,225 +1,317 @@
-// Current Time - Digital clock
-const currentTime = document.querySelector('#current-time');
-const selectedDayOfWeek = document.querySelector('.day-info__day');
-const selectedDate = document.querySelector('.day-info__date');
-const daysOfWeek = {
-  Mon: 'Понедельник',
-  Tue: 'Вторник',
-  Wed: 'Среда',
-  Thu: 'Четверг',
-  Fri: 'Пятница',
-  Sat: 'Суббота',
-  Sun: 'Воскресенье',
-};
-const months = {
-  Jan: 'Января',
-  Feb: 'Февраля',
-  Mar: 'Марта',
-  Apr: 'Апреля',
-  May: 'Мая',
-  Jun: 'Июня',
-  Jul: 'Июля',
-  Aug: 'Августа',
-  Sep: 'Сентября',
-  Oct: 'Октября',
-  Nov: 'Ноября',
-  Dec: 'Декабря',
-};
+import { AppData } from './modules/app_data.js';
+import { wmoData } from './modules/weather_description.js';
+import { renderDayCards } from './modules/_day_cards_render.js';
+import { renderDayHourly } from './modules/_day_hourly_render.js';
 
-window.onload = () => {
-  // testDate.setDate(testDate.getDate() + 1);
-  // console.log(testDate);
-  // testDate.setDate(testDate.getDate() + 1);
-  // console.log(testDate);
-  window.setInterval(() => {
-    let date = new Date();
-    // let dateArr = date.toDateString().split(/\s+/);
-    // selectedDayOfWeek.textContent = daysOfWeek[dateArr[0]];
-    // selectedDate.innerHTML = `<i class="_wi-cal-days icon_color"></i>${
-    //   dateArr[2]
-    // } ${months[dateArr[1]]} ${dateArr[3]}`;
-    currentTime.textContent = date.toLocaleTimeString('ru-RU', {
-      hour: '2-digit',
-      minute: '2-digit',
-    });
-  }, 1000);
-
-  // window.setTimeout(() => {
-  //   let date = new Date();
-  //   console.log(date.toDateString());
-  // }, 3_600_000);
-};
-
-// Modal window interaction
-const modalSearchWindow = document.querySelector('.search-modal');
+// ====== CONST for search pop-up window interaction ======>
+const modalSearchWindow = document.querySelector('.search-popup');
 const modalOpenBtn = document.querySelector('#modal-open-btn');
 const modalCloseBtn = document.querySelector('#modal-close-btn');
-const modalOkBtn = document.querySelector('#modal-ok-btn');
-
-const locationRequestForm = document.querySelector('#location-search-form');
-const locationSearchInput = document.querySelector('#location-name-search');
-const locationResultList = document.querySelector('#search-result-list');
-let geoSearchResults = [];
-
+// ====== CONST for forms interaction ======>
+const geoRequestForm = document.querySelector('#location-search-form');
+const geoSearchInput = document.querySelector('#location-name-search');
+const geoResultList = document.querySelector('#search-result-list');
 const weatherRequestForm = document.querySelector('#get-weather-form');
+// ====== CONST for data acquire and fields render ======>
+const daysBar = document.querySelector('aside');
+const dayHourly = document.querySelector('main');
+// ====== CONST for error pop-up window  ======>
+const errorPopUp = document.querySelector('.error-popup');
+const errorCloseBtn = document.querySelector('#error-close-btn');
+// ====== CONST for loadind animation  ======>
+const animMainLoading = document.querySelector('.loading-main');
+const animPopupLoading = document.querySelector('.loading-popup');
+//
+let searchResults; // to store geosearch results
+let mainData; // to store processed weather data
+let previousTimeId; // to erase previous setInterval
 
-modalSearchWindow.addEventListener('click', (event) => {
-  if (event.target === modalSearchWindow) modalSearchWindow.close();
-});
-
+// ====== Pop-up Window Events ======>
 modalOpenBtn.addEventListener('click', () => {
+  modalOpenBtn.classList.remove('first-appearance');
   modalSearchWindow.showModal();
 });
 
 modalCloseBtn.addEventListener('click', () => {
   modalSearchWindow.close();
   // Clear fields
-  geoSearchResults = [];
-  locationSearchInput.value = '';
-  locationResultList.innerHTML = '';
+  searchResults = [];
+  geoSearchInput.value = '';
+  geoResultList.innerHTML = '';
 });
 
-locationRequestForm.addEventListener('submit', (event) => {
+modalSearchWindow.addEventListener('click', (event) => {
+  if (event.target === modalSearchWindow) modalSearchWindow.close();
+});
+
+errorCloseBtn.addEventListener('click', () => {
+  errorPopUp.close();
+});
+
+errorPopUp.addEventListener('click', (event) => {
+  if (event.target === errorPopUp) errorPopUp.close();
+});
+
+// ====== Check History GeoData and Weather Forcast Request ======>
+if (localStorage.getItem('_pre') ?? false) {
+  animMainLoading.classList.remove('hidden');
+  const history = JSON.parse(localStorage.getItem('_pre'));
+  weatherRequest(history.latitude, history.longitude)
+    .then((data) => {
+      mainData = new AppData(data);
+      renderDayCards(daysBar, mainData, wmoData);
+      renderDayHourly(0, dayHourly, mainData, wmoData);
+      previousTimeId = renderCurrentTime(dayHourly, mainData, previousTimeId);
+      reRenderSearchBtn(
+        modalOpenBtn,
+        history.country_code,
+        history.region,
+        history.name
+      );
+    })
+    .then(() => {
+      // Waiting for weather icons loading
+      dayHourly.querySelector('img').onload = () => {
+        animMainLoading.classList.add('hidden');
+      };
+    })
+    .catch(() => {
+      animMainLoading.classList.add('hidden');
+      errorPopUp.querySelector('.message').innerHTML =
+        'Weather forcast API server request error';
+      errorPopUp.showModal();
+    });
+} else {
+  animMainLoading.classList.add('hidden');
+  modalOpenBtn.classList.add('first-appearance');
+}
+
+// ====== Geolocation Request ======>
+geoRequestForm.addEventListener('submit', (event) => {
   event.preventDefault();
-  const urlGeoLocation = `https://geocoding-api.open-meteo.com/v1/search?name=${locationSearchInput.value}&count=50&language=ru&format=json`;
+  animPopupLoading.classList.remove('hidden');
 
-  fetch(urlGeoLocation)
+  geoRequest(geoSearchInput.value)
     .then((geoData) => {
-      return geoData.status === 200
-        ? geoData.json()
-        : console.error('Geolocation server. Connection error...');
+      searchResults = geoData?.results;
+      renderGeoResults(searchResults, geoResultList);
+      animPopupLoading.classList.add('hidden');
     })
-    .then((geoData) => {
-      geoSearchResults = geoData?.results;
-      //
-      console.log(geoData);
-      console.log(geoSearchResults);
-      //
-      geoSearchResults.forEach((el, i) => {
-        let option = document.createElement('option');
-        option.setAttribute('value', i);
-        option.textContent = `${el.country}, ${el?.admin1}, ${el.name}`;
-        locationResultList.append(option);
-      });
-    })
-    .catch((err) => console.log(err));
+    .catch((err) => {
+      animPopupLoading.classList.add('hidden');
+      const message =
+        err.name === 'AbortError'
+          ? 'Server timeout error. Time limit exceeded'
+          : 'Geocoding API server request error';
+      errorPopUp.querySelector('.message').innerHTML = message;
+      errorPopUp.showModal();
+    });
 });
 
+// ====== Weather Forcast Request ======>
 weatherRequestForm.addEventListener('submit', (event) => {
   event.preventDefault();
-  // alert('Отправка запроса погоды в выбранной локации');
-  console.log(geoSearchResults[locationResultList.value]);
 
-  const latitude = geoSearchResults[locationResultList.value].latitude;
-  const longitude = geoSearchResults[locationResultList.value].longitude;
+  if (geoResultList.selectedIndex !== -1) {
+    animPopupLoading.classList.remove('hidden');
 
-  console.log(latitude, longitude);
+    const selected = searchResults[geoResultList.selectedIndex];
 
-  const urlWeather = `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&hourly=temperature_2m,relative_humidity_2m,apparent_temperature,precipitation,weather_code,surface_pressure,cloud_cover,visibility,wind_speed_10m,wind_direction_10m&daily=weather_code,temperature_2m_max,temperature_2m_min,apparent_temperature_max,apparent_temperature_min,precipitation_sum,wind_speed_10m_max,wind_direction_10m_dominant&wind_speed_unit=ms&timezone=auto`;
+    weatherRequest(selected.latitude, selected.longitude)
+      .then((data) => {
+        mainData = new AppData(data);
+        renderDayCards(daysBar, mainData, wmoData);
+        renderDayHourly(0, dayHourly, mainData, wmoData);
+        previousTimeId = renderCurrentTime(dayHourly, mainData, previousTimeId);
+        reRenderSearchBtn(
+          modalOpenBtn,
+          selected.country_code,
+          selected.admin1,
+          selected.name
+        );
 
-  //
-  fetch(urlWeather)
-    .then((weatherData) => {
-      return weatherData.status === 200
-        ? weatherData.json()
-        : console.error('Weather server. Connection error...');
-    })
-    .then((weatherData) => {
-      console.log(weatherData);
-    })
-    .catch((err) => console.log(err));
-
-  // Clear fields
-  modalSearchWindow.close();
-  geoSearchResults = [];
-  locationSearchInput.value = '';
-  locationResultList.innerHTML = '';
+        // Saving history to local storage
+        localStorage.setItem(
+          '_pre',
+          JSON.stringify({
+            country_code: selected.country_code,
+            region: selected.admin1,
+            name: selected.name,
+            latitude: selected.latitude,
+            longitude: selected.longitude,
+          })
+        );
+      })
+      .then(() => {
+        // Waiting for weather icons loading
+        dayHourly.querySelector('img').onload = () => {
+          animPopupLoading.classList.add('hidden');
+          modalSearchWindow.close();
+          // Clear fields
+          // geoSearchInput.value = '';
+          // geoResultList.innerHTML = '';
+        };
+      })
+      .catch((err) => {
+        animPopupLoading.classList.add('hidden');
+        const message =
+          err.name === 'AbortError'
+            ? 'Server timeout error. Time limit exceeded'
+            : 'Weather forcast API server request error';
+        errorPopUp.querySelector('.message').innerHTML = message;
+        errorPopUp.showModal();
+      });
+  }
 });
 
-//
-// !!! 1hpa === 0.750062 mmHg
-//
+// ====== Day Forcast Selection ======>
+// 1. By mouse click
+daysBar.addEventListener('click', (event) => {
+  let node = event.target.closest('.card');
+  if (node) {
+    let previous = daysBar.querySelector('.card_active');
+    if (previous.dataset.dayNum !== node.dataset.dayNum) {
+      previous.classList.remove('card_active');
+      node.classList.add('card_active');
+      renderDayHourly(node.dataset.dayNum, dayHourly, mainData, wmoData);
+      renderCurrentTime(dayHourly, mainData);
+    }
+  }
+});
+// 2. By arrow and num keys
+const regex = /[1-7]|Arrow+/g;
+window.addEventListener('keyup', (event) => {
+  if (
+    regex.test(event.key) &&
+    !modalSearchWindow.open &&
+    daysBar.children.length !== 0
+  ) {
+    const current = daysBar.querySelector('.card_active');
+    const preIndex = Number(current.dataset.dayNum);
+    let newIndex = preIndex;
 
-// const countryInput = document.querySelector('#country-name-input');
-// const countryList = Array.from(
-//   document.querySelectorAll('.country-list option')
-// );
+    if (event.key === 'ArrowDown' && newIndex < 6) newIndex++;
+    if (event.key === 'ArrowUp' && newIndex > 0) newIndex--;
+    if (event.key === 'ArrowRight' && newIndex < 6) newIndex++;
+    if (event.key === 'ArrowLeft' && newIndex > 0) newIndex--;
+    if (Number(event.key) >= 1 && Number(event.key) <= 7) {
+      newIndex = Number(event.key) - 1;
+    }
 
-// countryInput.addEventListener('keyup', () => {
-//   nameFilter();
+    if (preIndex !== newIndex) {
+      current.classList.remove('card_active');
+      daysBar.children[newIndex].classList.add('card_active');
+      renderDayHourly(newIndex, dayHourly, mainData, wmoData);
+      previousTimeId = renderCurrentTime(dayHourly, mainData, previousTimeId);
+    }
+  }
+});
+
+// <<<<<<<< FUNCTIONS >>>>>>>>
+async function geoRequest(name) {
+  const url = `https://geocoding-api.open-meteo.com/v1/search?name=${name}&count=50&language=ru&format=json`;
+
+  const timeout = 8000;
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), timeout);
+
+  const response = await fetch(url, { signal: controller.signal }).then(
+    (data) => {
+      return data.status === 200
+        ? data.json()
+        : Error('Geocoding API server request error');
+    }
+  );
+
+  clearTimeout(timeoutId);
+
+  return response;
+}
+
+async function weatherRequest(latVal, longVal) {
+  const url = `https://api.open-meteo.com/v1/forecast?latitude=${latVal}&longitude=${longVal}&hourly=temperature_2m,relative_humidity_2m,apparent_temperature,precipitation,weather_code,surface_pressure,cloud_cover,visibility,wind_speed_10m,wind_direction_10m,wind_gusts_10m&daily=weather_code,temperature_2m_max,temperature_2m_min,apparent_temperature_max,apparent_temperature_min,sunrise,sunset,precipitation_sum,wind_speed_10m_max,&wind_speed_unit=ms&timezone=auto`;
+
+  const timeout = 8000;
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), timeout);
+
+  const response = await fetch(url, { signal: controller.signal }).then(
+    (data) => {
+      return data.status === 200
+        ? data.json()
+        : Error('Weather forcast API server request error');
+    }
+  );
+
+  clearTimeout(timeoutId);
+
+  return response;
+}
+
+function renderCurrentTime(hourlyNode, appData, timeId) {
+  clearInterval(timeId);
+
+  const currentTime = hourlyNode.querySelector('#current-time');
+
+  const currentTimeId = setInterval(() => {
+    let date = new Date();
+    date.setHours(date.getUTCHours() + appData.utcOffset);
+    currentTime.innerHTML = date.toLocaleTimeString('ru-RU', {
+      hour: '2-digit',
+      minute: '2-digit',
+    });
+
+    // Reload page after 00:00 in chosen location
+    if (
+      date.getHours() === 0 &&
+      date.getMinutes() === 0 &&
+      date.getSeconds() === 0
+    ) {
+      window.location.reload();
+    }
+  }, 1000);
+
+  return currentTimeId;
+}
+
+function reRenderSearchBtn(btnNode, countryCode, region, name) {
+  btnNode.innerHTML = `<i class="btn-icon"></i>
+  <div class="btn-name">${region}, ${name}</div>`;
+  btnNode.setAttribute('title', region, name);
+  btnNode.children[0].style.background = `url(./img/fi_rounded_svg/fi_${countryCode}.svg)`;
+}
+
+function renderGeoResults(results, outputNode) {
+  // Clear and activate fields
+  outputNode.innerHTML = '';
+  outputNode.removeAttribute('disabled');
+  //
+  if (results) {
+    results.forEach((el, i) => {
+      let option = document.createElement('option');
+      option.setAttribute('value', i);
+      option.innerHTML = `${el.country}, ${el.admin1}, ${el.name}`;
+      outputNode.append(option);
+    });
+  } else {
+    let option = document.createElement('option');
+    option.textContent = 'Нет совпадений';
+    outputNode.append(option);
+    outputNode.setAttribute('disabled', '');
+  }
+}
+
+// FIRST START TESTING => LocalStorage Erase
+// window.addEventListener('keydown', (event) => {
+//   if (event.key === 'e') {
+//     localStorage.clear();
+//   }
 // });
 
-// function nameFilter() {
-//   let filterString = countryInput.value.toLowerCase();
-//   countryList.forEach((el) => {
-//     let textValue = el.textContent || el.innerText;
-//     if (textValue.toLowerCase().indexOf(filterString) !== -1) {
-//       el.classList.remove('hidden');
-//     } else {
-//       el.classList.add('hidden');
-//     }
-//   });
-// }
-
-// fetch(url)
-//   .then((data) => {
-//     return data.status === 200
-//       ? data.json()
-//       : console.error('Server connection error...');
-//   })
-//   .then((data) => {
-//     console.log(data);
-//     console.log('UTC offset => |', `+${data.utc_offset_seconds / 3600} hours`);
-//     console.log('Current Time => |', `${data.current.time}`);
-//     console.log(
-//       'Current Temperature => |',
-//       `${data.current.temperature_2m}${data.current_units.temperature_2m}`
-//     );
-//   })
-//   .catch((err) => console.log(err));
-
-// const requiredCity = 'Moscow';
-// const selectContry = 'Russia';
-// const selectContryCode = 'RU';
-// const urlGeoloacation = `https://photon.komoot.io/api/?q=${requiredCity}`;
-
-// fetch(urlGeoloacation)
-//   .then((geoData) => {
-//     return geoData.status === 200
-//       ? geoData.json()
-//       : console.error('Geolocation server. Connection error...');
-//   })
-//   .then((geoData) => {
-//     console.log(geoData);
-//     const geoProps = geoData?.features.filter(
-//       (el) =>
-//         el.properties.countrycode === selectContryCode &&
-//         el.properties.type === 'city'
-//     )[0];
-//     const longitude = (
-//       (geoProps.properties.extent[0] + geoProps.properties.extent[2]) /
-//       2
-//     ).toFixed(6);
-//     const latitude = (
-//       (geoProps.properties.extent[1] + geoProps.properties.extent[3]) /
-//       2
-//     ).toFixed(6);
-//     console.log(geoProps);
-//     console.log('Longitude => |', longitude, 'Latitude => |', latitude);
-
-//     // const urlWeather = `https://api.open-meteo.com/v1/forecast?
-//     // latitude=${latitude}&
-//     // longitude=${longitude}&
-//     // current=temperature_2m`;
-
-//     // fetch(urlWeather)
-//     //   .then((wData) => {
-//     //     return wData.status === 200
-//     //       ? wData.json()
-//     //       : console.error('Weather forcast server. Connection error...');
-//     //   })
-//     //   .then((wData) => {
-//     //     console.log(wData);
-//     //   });
-//   })
-//   .catch((err) => console.log(err));
+// window.addEventListener('keydown', (event) => {
+//   if (event.key === 'r') {
+//     const message = 'Test error';
+//     errorPopUp.querySelector('.message').innerHTML = message;
+//     errorPopUp.showModal();
+//   }
+// });

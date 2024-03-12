@@ -17,9 +17,6 @@
     grid-row: span 35;
     flex-direction: row;
     flex-wrap: wrap;
-    //
-    // justify-content: flex-start;
-    //
     padding: 0 5px 10px 5px;
   }
 
@@ -73,7 +70,7 @@
     }
 
     table {
-      font-size: 1.1dvw;
+      font-size: 1dvw;
       padding: 0;
       margin: 0 3px 3dvh 3px;
 
@@ -82,7 +79,7 @@
         text-wrap: balance;
       }
 
-      .extended {
+      .table_extended {
         display: table-row;
       }
     }
@@ -99,6 +96,8 @@
   }
 
   .card {
+    padding: 0.6dvh 1dvw;
+
     &__day-of-week {
       font-size: 1.6em;
     }
@@ -109,8 +108,16 @@
     }
 
     &__temp {
-      font-size: 2.2em;
+      font-size: 1.4dvw;
       font-weight: 450;
+    }
+
+    .compact {
+      display: none;
+    }
+
+    .full {
+      display: inherit;
     }
   }
 
@@ -118,5 +125,44 @@
     order: 4;
     grid-column: span 48;
     grid-row: span 1;
+  }
+}
+
+@media screen and (max-height: 600px) {
+  header {
+    grid-row: span 3;
+
+    h1 {
+      padding-top: 0.8dvh;
+      font-size: 4.5dvh;
+    }
+
+    #modal-open-btn {
+      position: relative;
+      height: 4.2dvh;
+      font-size: 2.8dvh;
+      padding: 0 2dvh 0 5.5dvh;
+
+      .btn-icon {
+        height: calc(4.2dvh - 4px);
+        width: calc(4.2dvh - 4px);
+      }
+    }
+  }
+
+  main {
+    grid-row: span 34;
+  }
+}
+
+@media screen and (max-height: 700px) and (orientation: portrait) {
+  main {
+    overflow-y: scroll;
+  }
+
+  .day-info {
+    &__date {
+      margin-bottom: 5px;
+    }
   }
 }
