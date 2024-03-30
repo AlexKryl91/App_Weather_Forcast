@@ -15,6 +15,9 @@
     order: 3;
     grid-column: span 48;
     grid-row: span 35;
+  }
+
+  .day-hourly-container {
     flex-direction: row;
     flex-wrap: wrap;
     padding: 0 5px 10px 5px;
@@ -41,12 +44,20 @@
     }
   }
 
-  .hour-weather {
+  .hourly-weather {
     height: 88%;
     flex-direction: column;
     border-bottom: none;
     border-right: 2px solid rgba(70, 80, 90, 0.2);
     font-size: 1dvh;
+
+    background: linear-gradient(
+      180deg,
+      transparent 0%,
+      rgba(255, 255, 255, 0.7) 12%,
+      rgba(255, 255, 255, 0.7) 60%,
+      transparent 100%
+    );
 
     &:last-of-type {
       border-right: none;

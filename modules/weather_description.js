@@ -1,4 +1,4 @@
-export const wmoData = {
+export const meteoDescriptionObj = {
   0: {
     description: 'Чистое небо',
     iconPath: './img/wi_code_svg/wi_code0.svg',

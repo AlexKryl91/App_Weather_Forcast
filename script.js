@@ -1,7 +1,9 @@
+'use strict';
+
 import { AppData } from '/App_Weather_Forcast/modules/app_data.js';
-import { wmoData } from '/App_Weather_Forcast/modules/weather_description.js';
+import { meteoDescriptionObj } from '/App_Weather_Forcast/modules/weather_description.js';
 import { renderDayCards } from '/App_Weather_Forcast/modules/_day_cards_render.js';
-import { renderDayHourly } from '/App_Weather_Forcast/modules/_day_hourly_render.js';
+import { renderAllDaysHourly } from '/App_Weather_Forcast/modules/_days_hourly_render.js';
 
 // ====== CONST for search pop-up window interaction ======>
 const modalSearchWindow = document.querySelector('.search-popup');
@@ -11,10 +13,10 @@ const modalCloseBtn = document.querySelector('#modal-close-btn');
 const geoRequestForm = document.querySelector('#location-search-form');
 const geoSearchInput = document.querySelector('#location-name-search');
 const geoResultList = document.querySelector('#search-result-list');
-const weatherRequestForm = document.querySelector('#get-weather-form');
+const meteoRequestForm = document.querySelector('#get-weather-form');
 // ====== CONST for data acquire and fields render ======>
-const daysBar = document.querySelector('aside');
-const dayHourly = document.querySelector('main');
+const sideBar = document.querySelector('aside');
+const mainField = document.querySelector('main');
 // ====== CONST for error pop-up window  ======>
 const errorPopUp = document.querySelector('.error-popup');
 const errorCloseBtn = document.querySelector('#error-close-btn');
@@ -22,9 +24,8 @@ const errorCloseBtn = document.querySelector('#error-close-btn');
 const animMainLoading = document.querySelector('.loading-main');
 const animPopupLoading = document.querySelector('.loading-popup');
 //
-let searchResults; // to store geosearch results
-let mainData; // to store processed weather data
-let previousTimeId; // to erase previous setInterval
+let geoSearchResults; // to store geosearch results
+let currentTimeId; // to reassign setInterval for "Current Time Render"
 
 // ====== Pop-up Window Events ======>
 modalOpenBtn.addEventListener('click', () => {
@@ -34,10 +35,6 @@ modalOpenBtn.addEventListener('click', () => {
 
 modalCloseBtn.addEventListener('click', () => {
   modalSearchWindow.close();
-  // Clear fields
-  searchResults = [];
-  geoSearchInput.value = '';
-  geoResultList.innerHTML = '';
 });
 
 modalSearchWindow.addEventListener('click', (event) => {
@@ -53,36 +50,11 @@ errorPopUp.addEventListener('click', (event) => {
 });
 
 // ====== Check History GeoData and Weather Forcast Request ======>
-if (localStorage.getItem('_pre') ?? false) {
+if (localStorage.getItem('_pre')) {
   animMainLoading.classList.remove('hidden');
   const history = JSON.parse(localStorage.getItem('_pre'));
-  weatherRequest(history.latitude, history.longitude)
-    .then((data) => {
-      mainData = new AppData(data);
-      renderDayCards(daysBar, mainData, wmoData);
-      renderDayHourly(0, dayHourly, mainData, wmoData);
-      previousTimeId = renderCurrentTime(dayHourly, mainData, previousTimeId);
-      reRenderSearchBtn(
-        modalOpenBtn,
-        history.country_code,
-        history.region,
-        history.name
-      );
-    })
-    .then(() => {
-      // Waiting for weather icons loading
-      dayHourly.querySelector('img').onload = () => {
-        animMainLoading.classList.add('hidden');
-      };
-    })
-    .catch(() => {
-      animMainLoading.classList.add('hidden');
-      errorPopUp.querySelector('.message').innerHTML =
-        'Weather forcast API server request error';
-      errorPopUp.showModal();
-    });
+  meteoRequestAndRender(history, 'auto').then((id) => (currentTimeId = id));
 } else {
-  animMainLoading.classList.add('hidden');
   modalOpenBtn.classList.add('first-appearance');
 }
 
@@ -90,103 +62,45 @@ if (localStorage.getItem('_pre') ?? false) {
 geoRequestForm.addEventListener('submit', (event) => {
   event.preventDefault();
   animPopupLoading.classList.remove('hidden');
-
-  geoRequest(geoSearchInput.value)
-    .then((geoData) => {
-      searchResults = geoData?.results;
-      renderGeoResults(searchResults, geoResultList);
-      animPopupLoading.classList.add('hidden');
-    })
-    .catch((err) => {
-      animPopupLoading.classList.add('hidden');
-      const message =
-        err.name === 'AbortError'
-          ? 'Server timeout error. Time limit exceeded'
-          : 'Geocoding API server request error';
-      errorPopUp.querySelector('.message').innerHTML = message;
-      errorPopUp.showModal();
-    });
+  geoRequestAndRender(geoSearchInput).then((res) => (geoSearchResults = res));
 });
 
 // ====== Weather Forcast Request ======>
-weatherRequestForm.addEventListener('submit', (event) => {
+meteoRequestForm.addEventListener('submit', (event) => {
   event.preventDefault();
-
   if (geoResultList.selectedIndex !== -1) {
     animPopupLoading.classList.remove('hidden');
-
-    const selected = searchResults[geoResultList.selectedIndex];
-
-    weatherRequest(selected.latitude, selected.longitude)
-      .then((data) => {
-        mainData = new AppData(data);
-        renderDayCards(daysBar, mainData, wmoData);
-        renderDayHourly(0, dayHourly, mainData, wmoData);
-        previousTimeId = renderCurrentTime(dayHourly, mainData, previousTimeId);
-        reRenderSearchBtn(
-          modalOpenBtn,
-          selected.country_code,
-          selected.admin1,
-          selected.name
-        );
-
-        // Saving history to local storage
-        localStorage.setItem(
-          '_pre',
-          JSON.stringify({
-            country_code: selected.country_code,
-            region: selected.admin1,
-            name: selected.name,
-            latitude: selected.latitude,
-            longitude: selected.longitude,
-          })
-        );
-      })
-      .then(() => {
-        // Waiting for weather icons loading
-        dayHourly.querySelector('img').onload = () => {
-          animPopupLoading.classList.add('hidden');
-          modalSearchWindow.close();
-          // Clear fields
-          // geoSearchInput.value = '';
-          // geoResultList.innerHTML = '';
-        };
-      })
-      .catch((err) => {
-        animPopupLoading.classList.add('hidden');
-        const message =
-          err.name === 'AbortError'
-            ? 'Server timeout error. Time limit exceeded'
-            : 'Weather forcast API server request error';
-        errorPopUp.querySelector('.message').innerHTML = message;
-        errorPopUp.showModal();
-      });
+    const selected = geoSearchResults[geoResultList.selectedIndex];
+    clearInterval(currentTimeId);
+    meteoRequestAndRender(selected, 'user').then((id) => (currentTimeId = id));
   }
 });
 
 // ====== Day Forcast Selection ======>
 // 1. By mouse click
-daysBar.addEventListener('click', (event) => {
+sideBar.addEventListener('click', (event) => {
   let node = event.target.closest('.card');
   if (node) {
-    let previous = daysBar.querySelector('.card_active');
-    if (previous.dataset.dayNum !== node.dataset.dayNum) {
+    let previous = sideBar.querySelector('.card_active');
+    let preIndex = previous.dataset.dayNum;
+    let newIndex = node.dataset.dayNum;
+    if (preIndex !== newIndex) {
       previous.classList.remove('card_active');
       node.classList.add('card_active');
-      renderDayHourly(node.dataset.dayNum, dayHourly, mainData, wmoData);
-      renderCurrentTime(dayHourly, mainData);
+      mainField.children[preIndex].classList.add('hidden');
+      mainField.children[newIndex].classList.remove('hidden');
     }
   }
 });
 // 2. By arrow and num keys
-const regex = /[1-7]|Arrow+/g;
+const regex = /([1-7])|(^Arrow)/;
 window.addEventListener('keyup', (event) => {
   if (
     regex.test(event.key) &&
     !modalSearchWindow.open &&
-    daysBar.children.length !== 0
+    sideBar.children.length !== 0
   ) {
-    const current = daysBar.querySelector('.card_active');
+    const current = sideBar.querySelector('.card_active');
     const preIndex = Number(current.dataset.dayNum);
     let newIndex = preIndex;
 
@@ -200,26 +114,22 @@ window.addEventListener('keyup', (event) => {
 
     if (preIndex !== newIndex) {
       current.classList.remove('card_active');
-      daysBar.children[newIndex].classList.add('card_active');
-      renderDayHourly(newIndex, dayHourly, mainData, wmoData);
-      previousTimeId = renderCurrentTime(dayHourly, mainData, previousTimeId);
+      sideBar.children[newIndex].classList.add('card_active');
+      mainField.children[preIndex].classList.add('hidden');
+      mainField.children[newIndex].classList.remove('hidden');
     }
   }
 });
 
 // <<<<<<<< FUNCTIONS >>>>>>>>
-async function geoRequest(name) {
-  const url = `https://geocoding-api.open-meteo.com/v1/search?name=${name}&count=50&language=ru&format=json`;
-
+async function controledFetch(url) {
   const timeout = 8000;
   const controller = new AbortController();
   const timeoutId = setTimeout(() => controller.abort(), timeout);
 
   const response = await fetch(url, { signal: controller.signal }).then(
     (data) => {
-      return data.status === 200
-        ? data.json()
-        : Error('Geocoding API server request error');
+      return data.status === 200 ? data.json() : console.error();
     }
   );
 
@@ -228,35 +138,67 @@ async function geoRequest(name) {
   return response;
 }
 
-async function weatherRequest(latVal, longVal) {
-  const url = `https://api.open-meteo.com/v1/forecast?latitude=${latVal}&longitude=${longVal}&hourly=temperature_2m,relative_humidity_2m,apparent_temperature,precipitation,weather_code,surface_pressure,cloud_cover,visibility,wind_speed_10m,wind_direction_10m,wind_gusts_10m&daily=weather_code,temperature_2m_max,temperature_2m_min,apparent_temperature_max,apparent_temperature_min,sunrise,sunset,precipitation_sum,wind_speed_10m_max,&wind_speed_unit=ms&timezone=auto`;
+async function geoRequestAndRender({ value }) {
+  const url = `https://geocoding-api.open-meteo.com/v1/search?name=${value}&count=50&language=ru&format=json`;
 
-  const timeout = 8000;
-  const controller = new AbortController();
-  const timeoutId = setTimeout(() => controller.abort(), timeout);
-
-  const response = await fetch(url, { signal: controller.signal }).then(
-    (data) => {
-      return data.status === 200
-        ? data.json()
-        : Error('Weather forcast API server request error');
-    }
-  );
-
-  clearTimeout(timeoutId);
-
-  return response;
+  return controledFetch(url)
+    .then((geoData) => {
+      const res = geoData?.results;
+      renderGeoResults(res, geoResultList);
+      return res;
+    })
+    .catch((err) => {
+      errorHandler(err, 'geo');
+    })
+    .finally(() => {
+      animPopupLoading.classList.add('hidden');
+    });
 }
 
-function renderCurrentTime(hourlyNode, appData, timeId) {
-  clearInterval(timeId);
+async function meteoRequestAndRender(geoInfo, callingEventKey) {
+  const url = `https://api.open-meteo.com/v1/forecast?latitude=${geoInfo.latitude}&longitude=${geoInfo.longitude}&hourly=temperature_2m,relative_humidity_2m,apparent_temperature,precipitation,weather_code,surface_pressure,cloud_cover,visibility,wind_speed_10m,wind_direction_10m,wind_gusts_10m&daily=weather_code,temperature_2m_max,temperature_2m_min,apparent_temperature_max,apparent_temperature_min,sunrise,sunset,precipitation_sum,wind_speed_10m_max,&wind_speed_unit=ms&timezone=auto`;
 
+  return controledFetch(url)
+    .then((data) => {
+      const meteoData = new AppData(data);
+      renderDayCards(sideBar, meteoData, meteoDescriptionObj);
+      renderAllDaysHourly(mainField, meteoData, meteoDescriptionObj);
+      const timeId = renderCurrentTime(mainField, meteoData);
+      reRenderSearchBtn(modalOpenBtn, geoInfo);
+
+      if (callingEventKey === 'user') {
+        // Saving history to local storage
+        localStorage.setItem('_pre', JSON.stringify(geoInfo));
+      }
+
+      return timeId;
+    })
+    .then((timeId) => {
+      // Waiting for weather icons loading
+      mainField.querySelector('img').onload = () => {
+        callingEventKey === 'user'
+          ? modalSearchWindow.close()
+          : animMainLoading.classList.add('hidden');
+      };
+
+      return timeId;
+    })
+    .catch((err) => {
+      errorHandler(err, 'meteo');
+    })
+    .finally(() => {
+      let animationNode =
+        callingEventKey === 'user' ? animPopupLoading : animMainLoading;
+      animationNode.classList.add('hidden');
+    });
+}
+
+function renderCurrentTime(hourlyNode, appData) {
   const currentTime = hourlyNode.querySelector('#current-time');
-
-  const currentTimeId = setInterval(() => {
+  const timeId = setInterval(() => {
     let date = new Date();
     date.setHours(date.getUTCHours() + appData.utcOffset);
-    currentTime.innerHTML = date.toLocaleTimeString('ru-RU', {
+    currentTime.textContent = date.toLocaleTimeString('ru-RU', {
       hour: '2-digit',
       minute: '2-digit',
     });
@@ -271,14 +213,13 @@ function renderCurrentTime(hourlyNode, appData, timeId) {
     }
   }, 1000);
 
-  return currentTimeId;
+  return timeId;
 }
 
-function reRenderSearchBtn(btnNode, countryCode, region, name) {
+function reRenderSearchBtn(btnNode, { country_code, admin1, name }) {
   btnNode.innerHTML = `<i class="btn-icon"></i>
-  <div class="btn-name">${region}, ${name}</div>`;
-  btnNode.setAttribute('title', region, name);
-  btnNode.children[0].style.background = `url(./img/fi_rounded_svg/fi_${countryCode}.svg)`;
+  <div class="btn-name">${admin1}, ${name}</div>`;
+  btnNode.children[0].style.background = `url(./img/fi_rounded_svg/fi_${country_code}.svg)`;
 }
 
 function renderGeoResults(results, outputNode) {
@@ -287,31 +228,47 @@ function renderGeoResults(results, outputNode) {
   outputNode.removeAttribute('disabled');
   //
   if (results) {
-    results.forEach((el, i) => {
-      let option = document.createElement('option');
-      option.setAttribute('value', i);
-      option.innerHTML = `${el.country}, ${el.admin1}, ${el.name}`;
-      outputNode.append(option);
+    results.forEach((el) => {
+      outputNode.append(new Option(`${el.country}, ${el.admin1}, ${el.name}`));
     });
   } else {
-    let option = document.createElement('option');
-    option.textContent = 'Нет совпадений';
-    outputNode.append(option);
+    outputNode.append(new Option('Нет совпадений'));
     outputNode.setAttribute('disabled', '');
   }
 }
 
-// FIRST START TESTING => LocalStorage Erase
-// window.addEventListener('keydown', (event) => {
-//   if (event.key === 'e') {
-//     localStorage.clear();
-//   }
-// });
+function errorHandler(err, errMsgKey) {
+  const userErrorMsg = {
+    geo: 'Geocoding Server request error',
+    meteo: 'Weather forcast Server request error',
+  };
+  const message =
+    err.name === 'AbortError'
+      ? 'Server timeout error. Time limit exceeded'
+      : userErrorMsg[errMsgKey];
+  errorPopUp.querySelector('.message').innerHTML = message;
+  errorPopUp.showModal();
+}
 
-// window.addEventListener('keydown', (event) => {
-//   if (event.key === 'r') {
-//     const message = 'Test error';
-//     errorPopUp.querySelector('.message').innerHTML = message;
-//     errorPopUp.showModal();
-//   }
-// });
+// DEV KEYS FOR TESTING
+window.addEventListener('keydown', (event) => {
+  if (
+    event.code == 'KeyL' &&
+    event.shiftKey &&
+    (event.ctrlKey || event.metaKey)
+  ) {
+    console.log('DevKeys => Clear Local storage');
+    localStorage.clear();
+  }
+
+  if (
+    event.code == 'KeyK' &&
+    event.shiftKey &&
+    (event.ctrlKey || event.metaKey)
+  ) {
+    console.log('DevKeys => Show Test Error Popup');
+    errorPopUp.querySelector('.message').innerHTML = 'Test error';
+    errorPopUp.showModal();
+  }
+});
+//

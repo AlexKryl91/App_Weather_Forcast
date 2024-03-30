@@ -9,7 +9,7 @@ header {
 
   .logo-box {
     flex: 1;
-    margin: 0 min(3.1dvw, 15px) 0 min(1.3dvw, 10px);
+    margin: 0 min(2dvw, 15px) 0 min(1.3dvw, 10px);
     @include bg-icon(url(../img/logo.svg), 85%);
   }
 
@@ -41,12 +41,12 @@ header {
   color: var(--color-gray-blue);
   background-color: transparent;
   border: 2px solid var(--color-gray-blue);
-  transition: all 0.3s;
 
   &:hover {
     color: var(--color-text-1);
     background-color: var(--color-white);
     border: 2px solid var(--color-white);
+    transition: all 0.3s;
   }
 
   .btn-icon {

@@ -12,26 +12,23 @@ export function renderDayCards(parentNode, appData, weatherObj) {
       'aria-label',
       'Нажмите, чтобы посмотреть погоду подробнее'
     );
-    div.setAttribute('title', 'Посмотреть подробнее');
 
     let daySName =
-      i === 0 ? 'Сегодня' : i === 1 ? 'Завтра' : appData[i].dayOfWeekShort;
+      i === 0 ? 'Сегодня' : i === 1 ? 'Завтра' : appData[i].dayShort;
     let dayLName =
-      i === 0 ? 'Сегодня' : i === 1 ? 'Завтра' : appData[i].dayOfWeek;
-
-    let date = `${appData[i].date[0]} ${appData[i].date[1]}`;
+      i === 0 ? 'Сегодня' : i === 1 ? 'Завтра' : appData[i].dayLong;
 
     div.innerHTML = `
-  <div class="card__day-of-week compact" title="День недели">${daySName}</div>
-  <div class="card__day-of-week full" title="День недели">${dayLName}</div>
-  <div class="card__date" title="Дата">${date}</div>
-  <div class="card__weather-icon" title="${
+  <div class="card__day-of-week compact" area-label="День недели">${daySName}</div>
+  <div class="card__day-of-week full" area-label="День недели">${dayLName}</div>
+  <div class="card__date" area-label="Дата">${appData[i].dateShort}</div>
+  <div class="card__weather-icon" area-label="${
     weatherObj[appData[i].weatherCode].description
   }"></div>
-  <div class="card__temp compact" title="Температура">${
+  <div class="card__temp compact" area-label="Температура">${
     appData[i].maxTemperature
   }&degC</div>
-  <div class="card__temp full" title="Температура">${
+  <div class="card__temp full" area-label="Температура">${
     appData[i].minTemperature
   }&degC ... ${appData[i].maxTemperature}&degC</div>`;
     //

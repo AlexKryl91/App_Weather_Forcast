@@ -1,51 +1,29 @@
 // Export the main structure of app data
 
 const dayNames = {
-  Mon: 'Понедельник',
-  Tue: 'Вторник',
-  Wed: 'Среда',
-  Thu: 'Четверг',
-  Fri: 'Пятница',
-  Sat: 'Суббота',
-  Sun: 'Воскресенье',
+  1: { long: 'Понедельник', short: 'Пн' },
+  2: { long: 'Вторник', short: 'Вт' },
+  3: { long: 'Среда', short: 'Ср' },
+  4: { long: 'Четверг', short: 'Чт' },
+  5: { long: 'Пятница', short: 'Пт' },
+  6: { long: 'Суббота', short: 'Сб' },
+  0: { long: 'Воскресенье', short: 'Вс' },
 };
-const dayShortNames = {
-  Mon: 'Пн',
-  Tue: 'Вт',
-  Wed: 'Ср',
-  Thu: 'Чт',
-  Fri: 'Пт',
-  Sat: 'Сб',
-  Sun: 'Вс',
-};
-const monthNames = {
-  Jan: 'Января',
-  Feb: 'Февраля',
-  Mar: 'Марта',
-  Apr: 'Апреля',
-  May: 'Мая',
-  Jun: 'Июня',
-  Jul: 'Июля',
-  Aug: 'Августа',
-  Sep: 'Сентября',
-  Oct: 'Октября',
-  Nov: 'Ноября',
-  Dec: 'Декабря',
-};
-const appSelectedHours = [6, 9, 12, 15, 18, 21];
 
-function dataHourFilter(data, selectedHours, dayNum) {
-  return data
-    .slice(dayNum * 24, (dayNum + 1) * 24)
+const hoursPreset = [6, 9, 12, 15, 18, 21];
+
+function dataHourFilter(dataArr, selectedHours, index) {
+  return dataArr
+    .slice(index * 24, (index + 1) * 24)
     .filter((el, i) => selectedHours.includes(i));
 }
 
-function tempFormat(value) {
+function tempFormatter(value) {
   let res = Math.round(value);
   return res > 0 ? `+${res}` : `${res}`;
 }
 
-function windDirectionStr(degree) {
+function windDirFormatter(degree) {
   if (348.75 < degree || degree < 11.25) return 'С';
   if (11.25 <= degree && degree <= 33.75) return 'ССВ';
   if (33.75 < degree && degree < 56.25) return 'СВ';
@@ -64,7 +42,7 @@ function windDirectionStr(degree) {
   if (326.25 <= degree && degree <= 348.75) return 'ССЗ';
 }
 
-function distanceFormat(value) {
+function distanceFormatter(value) {
   if (value < 1000) {
     return (value / 1000).toFixed(2);
   }
@@ -76,18 +54,9 @@ function distanceFormat(value) {
   }
 }
 
-function dateZeroClean(dayOfMonth) {
-  return dayOfMonth
-    .split('')
-    .filter((el) => el !== '0')
-    .join('');
-}
-
-function dayOrNigthFilter(data, selectedHours, index) {
-  let sunriseDate = new Date(data.daily.sunrise[index]);
-  let sunsetDate = new Date(data.daily.sunset[index]);
-  let sunriseHour = sunriseDate.getHours();
-  let sunsetHour = sunsetDate.getHours();
+function dayOrNigth(data, selectedHours, index) {
+  let sunriseHour = new Date(data.daily.sunrise[index]).getHours();
+  let sunsetHour = new Date(data.daily.sunset[index]).getHours();
   return selectedHours.map((el) =>
     el > sunriseHour && el < sunsetHour ? 'day' : 'night'
   );
@@ -98,94 +67,90 @@ export function AppData(data) {
 
   for (let i = 0; i < 7; i++) {
     this[i] = {};
-
+    //
     const dayDate = new Date(data.daily.time[i]);
-    const dateArr = dayDate.toDateString().split(/\s+/g);
-
-    this[i].date = [
-      dateZeroClean(dateArr[2]),
-      monthNames[dateArr[1]],
-      dateArr[3],
-    ];
-    this[i].dayOfWeek = dayNames[dateArr[0]];
-    this[i].dayOfWeekShort = dayShortNames[dateArr[0]];
-
-    this[i].maxTemperature = tempFormat(data.daily.temperature_2m_max[i]);
-
-    this[i].minTemperature = tempFormat(data.daily.temperature_2m_min[i]);
-
+    const dateStr = dayDate.toLocaleString('ru-RU', {
+      day: 'numeric',
+      month: 'long',
+    });
+    const dayNumber = dayDate.getDay();
+    //
+    this[i].dateShort = dateStr;
+    this[i].dateLong = `${dateStr} ${dayDate.getFullYear()}`;
+    this[i].dayLong = dayNames[dayNumber].long;
+    this[i].dayShort = dayNames[dayNumber].short;
+    this[i].maxTemperature = tempFormatter(data.daily.temperature_2m_max[i]);
+    this[i].minTemperature = tempFormatter(data.daily.temperature_2m_min[i]);
     this[i].weatherCode = data.daily.weather_code[i];
 
     this[i].hourly = {};
-
-    this[i].hourly.hours = appSelectedHours.map((el) => `${el}:00`);
-
-    this[i].hourly.sunTag = dayOrNigthFilter(data, appSelectedHours, i);
+    this[i].hourly.hours = hoursPreset.map((el) => `${el}:00`);
+    this[i].hourly.sunTag = dayOrNigth(data, hoursPreset, i);
 
     this[i].hourly.weatherCode = dataHourFilter(
       data.hourly.weather_code,
-      appSelectedHours,
+      hoursPreset,
       i
     );
 
     this[i].hourly.temperature = dataHourFilter(
       data.hourly.temperature_2m,
-      appSelectedHours,
+      hoursPreset,
       i
-    ).map((el) => tempFormat(el));
+    ).map(tempFormatter);
 
     this[i].hourly.apparentTemperature = dataHourFilter(
       data.hourly.apparent_temperature,
-      appSelectedHours,
+      hoursPreset,
       i
-    ).map((el) => tempFormat(el));
+    ).map(tempFormatter);
 
     this[i].hourly.pressure = dataHourFilter(
       data.hourly.surface_pressure,
-      appSelectedHours,
+      hoursPreset,
       i
     ).map((el) => Math.round(el * 0.750062));
 
     this[i].hourly.windSpeed = dataHourFilter(
       data.hourly.wind_speed_10m,
-      appSelectedHours,
+      hoursPreset,
       i
     ).map((el) => el.toFixed(1));
 
     this[i].hourly.windGusts = dataHourFilter(
       data.hourly.wind_gusts_10m,
-      appSelectedHours,
+      hoursPreset,
       i
     ).map((el) => el.toFixed(1));
 
     this[i].hourly.windDirection = dataHourFilter(
       data.hourly.wind_direction_10m,
-      appSelectedHours,
+      hoursPreset,
       i
-    ).map((el) => windDirectionStr(el));
+    ).map(windDirFormatter);
 
     this[i].hourly.humidity = dataHourFilter(
       data.hourly.relative_humidity_2m,
-      appSelectedHours,
+      hoursPreset,
       i
     );
 
     this[i].hourly.precipitation = dataHourFilter(
       data.hourly.precipitation,
-      appSelectedHours,
+      hoursPreset,
       i
     );
 
     this[i].hourly.cloudCover = dataHourFilter(
       data.hourly.cloud_cover,
-      appSelectedHours,
+      hoursPreset,
       i
     );
 
     this[i].hourly.visibility = dataHourFilter(
       data.hourly.visibility,
-      appSelectedHours,
+      hoursPreset,
       i
-    ).map((el) => distanceFormat(el));
+    ).map(distanceFormatter);
   }
 }
