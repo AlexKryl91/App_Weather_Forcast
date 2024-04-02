@@ -1,9 +1,9 @@
-'use strict';
+import '../scss/index.scss';
 
-import { AppData } from '/App_Weather_Forcast/modules/app_data.js';
-import { meteoDescriptionObj } from '/App_Weather_Forcast/modules/weather_description.js';
-import { renderDayCards } from '/App_Weather_Forcast/modules/_day_cards_render.js';
-import { renderAllDaysHourly } from '/App_Weather_Forcast/modules/_days_hourly_render.js';
+import { AppData } from './modules/app_data';
+import { meteoDescriptionObj } from './modules/weather_description';
+import { renderDayCards } from './modules/_day_cards_render';
+import { renderAllDaysHourly } from './modules/_days_hourly_render';
 
 // ====== CONST for search pop-up window interaction ======>
 const modalSearchWindow = document.querySelector('.search-popup');
