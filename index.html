@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href="/favicon/apple-touch-icon.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="/favicon/favicon-32x32.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="/favicon/favicon-16x16.png"
+    />
+    <link rel="manifest" href="/favicon/site.webmanifest" />
+    <link
+      rel="mask-icon"
+      href="/favicon/safari-pinned-tab.svg"
+      color="#5bbad5"
+    />
+    <meta name="msapplication-TileColor" content="#da532c" />
+    <meta name="theme-color" content="#3c61dd" />
+    <title>Погода</title>
+
+    <link rel="stylesheet" href="/css/weather_app_font.css" />
+    <link rel="stylesheet" href="/css/styles.css" />
+    <script type="module" crossorigin src="/assets/index-DvOaCNjr.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/index-tAenP2oZ.css">
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <div class="logo-box" aria-label="Логотип страницы"></div>
+        <h1 role="banner">Погода</h1>
+        <div class="search-btn-container">
+          <button
+            type="submit"
+            id="modal-open-btn"
+            title="Нажмите, чтобы открыть окно поиска"
+            aria-label="Нажмите, чтобы открыть окно поиска"
+          >
+            <i class="btn-icon _wi-location-dot"></i>
+            <div class="btn-name">Поиск локации ...</div>
+          </button>
+        </div>
+      </header>
+      <main role="main">
+        <section class="intro-text">
+          <p>Узнайте погоду в любой точке света.</p>
+          <p>
+            В этом Вам поможет кнопка поиска
+            <strong>сверху</strong>.
+          </p>
+        </section>
+      </main>
+      <aside
+        role="switch"
+        aria-label="Выберите день для просмотра подробностей погодных условий"
+      ></aside>
+      <footer role="contentinfo">
+        <p class="author" aria-label="Разработчик">
+          Designed by:
+          <a href="https://github.com/AlexKryl91" target="_blank"
+            >Alexander Krylovsky</a
+          >
+        </p>
+        <p class="refference">
+          &copy; Weather Forecast & Geocoding API:<a
+            href="https://open-meteo.com/"
+            target="_blank"
+          >
+            Open-meteo.com</a
+          >
+        </p>
+      </footer>
+    </div>
+    <!-- Dynamic UI components -->
+    <div class="loading loading-main hidden">
+      <svg class="spinner" viewBox="0 0 50 50">
+        <circle
+          class="path"
+          cx="25"
+          cy="25"
+          r="20"
+          fill="none"
+          stroke-width="5"
+        ></circle>
+      </svg>
+    </div>
+    <dialog class="popup search-popup" role="dialog" aria-label="Поиск локации">
+      <div class="modal-container">
+        <h2>Поиск локации</h2>
+        <form id="location-search-form">
+          <label for="location-name-search">Населенный пункт</label>
+          <div class="input-wrapper">
+            <input
+              type="search"
+              placeholder="Введите название ..."
+              id="location-name-search"
+              role="search"
+              title="Введите имя локации для поиска"
+              aria-label="Введите имя локации для поиска"
+              required
+            />
+            <button
+              type="submit"
+              class="_wi-mag-glass search-btn"
+              title="Найти"
+              aria-label="Нажмите кнопку для поиска"
+            ></button>
+          </div>
+        </form>
+        <form id="get-weather-form">
+          <label for="search-result-list">Список результатов</label>
+          <select
+            id="search-result-list"
+            size="4"
+            role="search"
+            title="Выберите пункт из списка резульатов"
+            aria-label="Выберите пункт из списка резульатов"
+            required
+          ></select>
+        </form>
+        <div class="btn-wrapper">
+          <button
+            type="submit"
+            form="get-weather-form"
+            id="modal-aplly-btn"
+            class="btn"
+            title="Применить выбор"
+            aria-label="Нажмите кнопку, чтобы применить выбор"
+          >
+            Применить
+          </button>
+          <button
+            type="button"
+            id="modal-close-btn"
+            class="btn"
+            title="Выход из поиска"
+            aria-label="Нажмите кнопку для отмены"
+          >
+            Отмена
+          </button>
+        </div>
+        <div class="loading loading-popup hidden">
+          <svg class="spinner" viewBox="0 0 50 50">
+            <circle
+              class="path"
+              cx="25"
+              cy="25"
+              r="20"
+              fill="none"
+              stroke-width="5"
+            ></circle>
+          </svg>
+        </div>
+      </div>
+    </dialog>
+    <dialog
+      class="popup error-popup"
+      role="dialog"
+      aria-label="Возникла ошибка"
+    >
+      <div class="modal-container">
+        <h1>Ой!</h1>
+        <div class="text-wrapper">
+          <p>Что-то пошло не так...</p>
+          <p>Повторите попытку позднее</p>
+        </div>
+        <p class="message"></p>
+        <button type="button" id="error-close-btn" class="btn">ОК</button>
+      </div>
+    </dialog>
+
+  </body>
+</html>
