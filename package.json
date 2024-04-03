@@ -1,6 +1,6 @@
 {
   "name": "app-weather-forcast",
-  "private": true,
+  "private": false,
   "version": "1.11.0",
   "type": "module",
   "homepage": "https://alexkryl91.github.io/App_Weather_Forcast",
