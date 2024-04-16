@@ -1,7 +1,7 @@
 {
   "name": "Прогноз погода",
   "short_name": "Погода",
-  "start_url": ".",
+  "start_url": "https://alexkryl91.github.io/App_Weather_Forcast",
   "icons": [
     {
       "src": "../favicon/android-chrome-192x192.png",
