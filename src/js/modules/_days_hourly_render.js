@@ -53,7 +53,7 @@ export function renderAllDaysHourly(parentNode, appData, weatherObj) {
           <p class="hourly-weather__temp-value">${hourlyData.temperature[i]}&degC</p>
         </div>
         <table aria-label="Таблица параметров в указанный час">
-          <caption role="definition" aria-label="Описание погодных условий">${weatherObj[weatherCode].description}</caption>
+          <caption aria-label="Описание погодных условий">${weatherObj[weatherCode].description}</caption>
           <tbody>
             <tr>
                 <td class="_wi-temp-half"></td>

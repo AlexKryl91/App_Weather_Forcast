@@ -1,4 +1,4 @@
-const pathTemplate = '/img/wi_code_svg/wi_code';
+const pathTemplate = './img/wi_code_svg/wi_code';
 const fileExt = 'svg';
 const codeAndText = {
   0: 'Чистое небо',
