@@ -190,6 +190,7 @@ async function meteoRequestAndRender(geoInfo, callingEventKey) {
       let animationNode =
         callingEventKey === 'user' ? animPopupLoading : animMainLoading;
       animationNode.classList.add('hidden');
+      modalSearchWindow.close();
     });
 }
 

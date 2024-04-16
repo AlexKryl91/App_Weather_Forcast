@@ -1,6 +1,6 @@
 footer {
   @include grid-cr-span-and-font(span 24, span 1, 1dvh, 300);
-  padding: 3px 6px;
+  padding: 0 6px;
   color: var(--color-faded-white);
   background: var(--color-text-1);
 

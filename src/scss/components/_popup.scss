@@ -29,13 +29,16 @@
 
   .btn-wrapper {
     width: 100%;
-    text-align: center;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-evenly;
   }
 
   .btn {
     width: 42%;
+    min-width: 136px;
     padding: 10px 0;
-    margin: 0 10px;
     font-size: 20px;
     border-radius: 10px;
     color: var(--color-white);

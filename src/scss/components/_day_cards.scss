@@ -4,8 +4,8 @@ aside {
   display: flex;
   flex-direction: column;
   background-color: var(--color-white-blue);
-  padding: 10px;
-  gap: 10px;
+  padding: 1.2dvh;
+  gap: 1.2dvh;
   box-shadow: -6px 0px 10px var(--color-shadow-1);
 }
 
@@ -17,13 +17,13 @@ aside {
   color: var(--color-text-1);
   background-image: var(--gradient-white-blue);
   box-shadow: 0px 3px 10px var(--color-shadow-1);
+  transition: all 0.5s;
 
   @include grid-fr-col-row(1, 16);
   align-items: center;
 
   &:hover {
     scale: 1.05;
-    transition: all 0.5s;
   }
 
   &_active {

@@ -31,6 +31,7 @@ main {
 }
 
 .day-info {
+  min-height: 90px;
   flex: 1;
   padding: 5px 10px;
   border-bottom: 3px solid var(--color-text-1-alpha);
@@ -92,7 +93,7 @@ main {
   }
 
   &__time {
-    font-size: min(4em, 26px);
+    font-size: min(4em, 40px);
     font-weight: 400;
     color: rgba(0, 0, 0, 0.3);
     writing-mode: vertical-lr;
@@ -115,14 +116,14 @@ main {
   }
 
   &__temp-value {
-    font-size: min(5em, 22px);
+    font-size: min(5em, 33px);
     font-weight: 500;
     color: var(--color-text-1);
     margin-top: 0.8dvh;
   }
 
   table {
-    font-size: min(3em, 13px);
+    font-size: min(3em, 20px);
     color: var(--color-text-1);
     padding-right: 5dvw;
 

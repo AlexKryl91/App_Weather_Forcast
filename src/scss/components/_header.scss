@@ -2,7 +2,7 @@ header {
   grid-column: span 24;
   grid-row: span 2;
   background-color: var(--color-main-blue);
-  box-shadow: 0px 5px 10px rgb(180, 180, 180);
+  box-shadow: 0px 0.6dvh 10px rgb(180, 180, 180);
   border-bottom: 2px solid var(--color-faded-white);
   @extend %flex-row-center-shared;
   z-index: 0;
