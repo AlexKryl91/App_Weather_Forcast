@@ -12,7 +12,6 @@
   }
 
   main {
-    overflow-y: scroll;
     order: 3;
     grid-column: span 48;
     grid-row: span 35;
@@ -186,6 +185,10 @@
 }
 
 @media screen and (min-height: 900px) {
+  main {
+    overflow-y: auto;
+  }
+
   header {
     border-bottom: 3px solid var(--color-faded-white);
 
