@@ -4,6 +4,7 @@ import { AppData } from './modules/app_data';
 import { meteoDescriptionObj } from './modules/weather_description';
 import { renderDayCards } from './modules/_day_cards_render';
 import { renderAllDaysHourly } from './modules/_days_hourly_render';
+import devKeys from './modules/devKeys';
 
 // ====== CONST for search pop-up window interaction ======>
 const modalSearchWindow = document.querySelector('.search-popup');
@@ -252,24 +253,5 @@ function errorHandler(err, errMsgKey) {
 }
 
 // DEV KEYS FOR TESTING
-window.addEventListener('keydown', (event) => {
-  if (
-    event.code == 'KeyL' &&
-    event.shiftKey &&
-    (event.ctrlKey || event.metaKey)
-  ) {
-    console.log('DevKeys => Clear Local storage');
-    localStorage.clear();
-  }
-
-  if (
-    event.code == 'KeyK' &&
-    event.shiftKey &&
-    (event.ctrlKey || event.metaKey)
-  ) {
-    console.log('DevKeys => Show Test Error Popup');
-    errorPopUp.querySelector('.message').innerHTML = 'Test error';
-    errorPopUp.showModal();
-  }
-});
+devKeys(errorPopUp);
 //
